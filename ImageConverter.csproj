@@ -38,11 +38,20 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Program.cs" />
+        <Compile Include="Color.cs" />
+        <Compile Include="Executor.cs" />
+        <Compile Include="ImageByteReader.cs" />
+        <Compile Include="ImagePalette.cs" />
+        <Compile Include="ImageReader.cs" />
+        <Compile Include="Pixel.cs" />
+        <Compile Include="PPMImage.cs" />
+        <Compile Include="PPMReader.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
       <Content Include=".gitignore" />
+      <Content Include="Images\mycow.ppm" />
+      <Content Include="Images\myppm.ppm" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
