@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace ImageFormatConverter
 {
@@ -7,9 +8,17 @@ namespace ImageFormatConverter
     {
         public static void Main(string[] args)
         {
-            string path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"/Images/";
+            Console.WriteLine(args.Length);
+            string source = args[1].Substring(9);
+            string format = args[2].Substring(14);
+            string output = args.Length > 3 ? args[3].Substring(9) : source.Split('.')[0];
             
-            ImageConverter image = new ImageConverter(path+"mycow.ppm", "bmp",path);
+            
+            // string path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"/Images/";
+            //
+            // ImageConverter image = new ImageConverter(path+source, format,path);
+            
+            ImageConverter image = new ImageConverter(source, format,output);
             image.ConvertImage();
         }
     }

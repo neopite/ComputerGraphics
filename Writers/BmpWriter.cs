@@ -58,7 +58,7 @@ namespace ImageFormatConverter.Writers
 
         public override void WriteImage(Image image)
         {
-            BinaryWriter writer = new BinaryWriter(new FileStream(OutputPath + "image_converted.bmp", FileMode.Create));
+            BinaryWriter writer = new BinaryWriter(new FileStream(OutputPath + ".bmp", FileMode.Create));
             BmpInfoHeader header2 = new BmpInfoHeader(image);
             BmpHeader header1 = new BmpHeader(image.Height * image.Width * header2.colorDepth);
             
