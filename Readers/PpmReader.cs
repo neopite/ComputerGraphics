@@ -16,6 +16,7 @@ namespace ImageFormatConverter
             reader.ReadChar();
             string width = ""; 
             string height = "";
+            string maxVal = "";
             char currChar;
             while ((currChar = reader.ReadChar()) != ' ')
             {
@@ -25,9 +26,12 @@ namespace ImageFormatConverter
             {
                 height += currChar;
             }
-            reader.ReadChar();
+            while ((currChar = reader.ReadChar()) != '\n')
+            {
+                maxVal += currChar;
+            }
             Image bitmap = new Image {Height = int.Parse(width), Width = int.Parse(height)};
-            for (int x = 0; x < bitmap.Height; x++)
+            for (int x = bitmap.Height - 1; x >= 0; x--)
             {
                 for (int y = 0; y < bitmap.Width; y++)
                 {

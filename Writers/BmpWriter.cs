@@ -58,7 +58,7 @@ namespace ImageFormatConverter.Writers
 
         public override void WriteImage(Image image)
         {
-            BinaryWriter writer = new BinaryWriter(new FileStream(OutputPath + "aaa.bmp", FileMode.Create));
+            BinaryWriter writer = new BinaryWriter(new FileStream(OutputPath + "image_converted.bmp", FileMode.Create));
             BmpInfoHeader header2 = new BmpInfoHeader(image);
             BmpHeader header1 = new BmpHeader(image.Height * image.Width * header2.colorDepth);
             
@@ -79,11 +79,15 @@ namespace ImageFormatConverter.Writers
             writer.Write(header2.colorTableEntries);
             writer.Write(header2.importantColors);
 
-            foreach (var pixel in image.ImagePalette.ListOfPixels)
+            for (int i = image.Height - 1; i >= 0; i--)
             {
-                writer.Write(pixel.Color.R);
-                writer.Write(pixel.Color.G);
-                writer.Write(pixel.Color.B);
+                var rowOfPixels = image.ImagePalette.ListOfPixels.GetRange(i * image.Width, image.Width);
+                foreach (var pixel in rowOfPixels)
+                {
+                    writer.Write(pixel.Color.B);
+                    writer.Write(pixel.Color.G);
+                    writer.Write(pixel.Color.R);
+                }
             }
             writer.Write(new byte[]{0, 0});
             writer.Flush();
