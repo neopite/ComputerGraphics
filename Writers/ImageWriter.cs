@@ -1,6 +1,7 @@
-﻿using System.IO;
+﻿using ImageConverter.ImageStructure;
+using ImageFormatConverter;
 
-namespace ImageFormatConverter.Writers
+namespace ImageConverter.Writers
 {
     public abstract class ImageWriter
     {

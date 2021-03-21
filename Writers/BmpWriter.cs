@@ -1,8 +1,9 @@
-﻿using System;
-using System.IO;
-using ImageFormatConverter.FormatData;
+﻿using System.IO;
+using ImageConverter.ImageStructure;
+using ImageConverter.Writers.FormatData;
+using ImageFormatConverter;
 
-namespace ImageFormatConverter.Writers
+namespace ImageConverter.Writers
 {
     public class BmpWriter : ImageWriter
     {

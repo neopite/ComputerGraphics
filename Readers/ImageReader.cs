@@ -1,4 +1,6 @@
-﻿namespace ImageFormatConverter
+﻿using ImageConverter.ImageStructure;
+
+namespace ImageConverter.Readers
 {
     public abstract class ImageReader
     {

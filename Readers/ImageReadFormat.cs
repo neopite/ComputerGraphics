@@ -1,4 +1,4 @@
-﻿namespace ImageFormatConverter
+﻿namespace ImageConverter.Readers
 {
     public enum ImageType
     {

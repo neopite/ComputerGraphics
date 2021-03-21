@@ -1,6 +1,7 @@
 ﻿using System;
+using ImageConverter.Readers;
 
-namespace ImageFormatConverter
+namespace ImageConverter
 {
     public class Util
     {

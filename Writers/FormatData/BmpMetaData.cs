@@ -1,4 +1,6 @@
-namespace ImageFormatConverter.FormatData
+using ImageConverter.ImageStructure;
+
+namespace ImageConverter.Writers.FormatData
 {
     public class BmpMetaData
     {

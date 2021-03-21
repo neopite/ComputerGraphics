@@ -1,8 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
+using ImageConverter.Writers;
+using ImageFormatConverter;
 
-namespace ImageFormatConverter
+namespace ImageConverter
 {
     class Executor
     {
@@ -15,7 +16,7 @@ namespace ImageFormatConverter
 
             if (Enum.GetNames(typeof(ImageWriteFormat)).ToList().Contains(format.ToUpper()))
             {
-                ImageConverter image = new ImageConverter(source, format, output);
+                ImageConverter.ImageStructure.ImageConverter image = new ImageConverter.ImageStructure.ImageConverter(source, format, output);
                 image.ConvertImage();
             }
             else throw new OutputFormatNotExistedException(format);

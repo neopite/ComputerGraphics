@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using ImageFormatConverter;
 
-namespace ImageFormatConverter
+namespace ImageConverter.ImageStructure
 {
     public class ImagePalette
     {

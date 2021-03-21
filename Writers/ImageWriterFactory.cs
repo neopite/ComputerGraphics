@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ImageFormatConverter.Writers
+namespace ImageConverter.Writers
 {
     public class ImageWriterFactory
     {

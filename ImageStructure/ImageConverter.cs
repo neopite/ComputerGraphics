@@ -1,7 +1,9 @@
 ﻿using System;
-using ImageFormatConverter.Writers;
+using ImageConverter.Readers;
+using ImageConverter.Writers;
+using ImageFormatConverter;
 
-namespace ImageFormatConverter
+namespace ImageConverter.ImageStructure
 {
     public class ImageConverter
     {

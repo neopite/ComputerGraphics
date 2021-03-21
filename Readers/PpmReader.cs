@@ -1,6 +1,8 @@
 ﻿using System.IO;
+using ImageConverter.ImageStructure;
+using ImageFormatConverter;
 
-namespace ImageFormatConverter
+namespace ImageConverter.Readers
 {
     public class PpmReader : ImageReader
     {

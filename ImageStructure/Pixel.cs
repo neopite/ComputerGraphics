@@ -1,4 +1,4 @@
-﻿namespace ImageFormatConverter
+﻿namespace ImageConverter.ImageStructure
 {
     public class Pixel
     {

@@ -1,4 +1,4 @@
-﻿namespace ImageFormatConverter
+﻿namespace ImageConverter.Writers
 {
     public enum ImageWriteFormat
     {

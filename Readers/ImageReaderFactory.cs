@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ImageFormatConverter
+namespace ImageConverter.Readers
 {
     public class ImageReaderFactory
     {

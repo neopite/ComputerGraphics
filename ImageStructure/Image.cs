@@ -1,4 +1,6 @@
-﻿namespace ImageFormatConverter
+﻿using ImageFormatConverter;
+
+namespace ImageConverter.ImageStructure
 {
     public class Image
     {

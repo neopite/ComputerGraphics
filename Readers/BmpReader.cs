@@ -1,4 +1,7 @@
-﻿namespace ImageFormatConverter
+﻿using ImageConverter.ImageStructure;
+using ImageFormatConverter;
+
+namespace ImageConverter.Readers
 {
     public class BmpReader : ImageReader
     {
