@@ -1,9 +1,8 @@
 ﻿using System;
 using ImageConverter.Readers;
 using ImageConverter.Writers;
-using ImageFormatConverter;
 
-namespace ImageConverter.ImageStructure
+namespace ImageConverter
 {
     public class ImageConverter
     {
@@ -20,8 +19,7 @@ namespace ImageConverter.ImageStructure
         
         public void ConvertImage()
         {
-            Image image = _imageReader.ReadImage();
-            _imageWriter.WriteImage(image);
+            _imageWriter.WriteImage(_imageReader.ReadImage());
         }
     }
 }
