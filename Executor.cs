@@ -9,9 +9,9 @@ namespace ImageFormatConverter
         public static void Main(string[] args)
         {
             Console.WriteLine(args.Length);
-            string source = args[1].Substring(9);
-            string format = args[2].Substring(14);
-            string output = args.Length > 3 ? args[3].Substring(9) : source.Split('.')[0];
+            string source = args[0].Substring(9);
+            string format = args[1].Substring(14);
+            string output = args.Length > 3 ? args[2].Substring(9) : source.Split('.')[0];
             
             
             // string path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"/Images/";
