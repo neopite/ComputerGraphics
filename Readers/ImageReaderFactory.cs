@@ -25,8 +25,8 @@ namespace ImageFormatConverter
             ImageType imageType = Util.ExtractImageTypeFromImageSignature(sourcePath);
             switch (imageType)
             {
-                case ImageType.Bmp : return new BmpReader(sourcePath);
-                case ImageType.Ppm : return new PpmReader(sourcePath);
+                case ImageType.BMP : return new BmpReader(sourcePath);
+                case ImageType.PPM : return new PpmReader(sourcePath);
                 default: throw new Exception("Not such type");
             }
         }

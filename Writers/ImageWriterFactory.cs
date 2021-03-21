@@ -20,11 +20,11 @@ namespace ImageFormatConverter.Writers
             return instance;
         }
         
-        public ImageWriter GetImageWriter(ImageType imageType,string outputPath)
+        public ImageWriter GetImageWriter(ImageWriteFormat imageType,string outputPath)
         {
             switch (imageType)
             {
-                case ImageType.Bmp : return new BmpWriter(outputPath);
+                case ImageWriteFormat.BMP : return new BmpWriter(outputPath);
                 default: throw new Exception("Not such type");
             }
         }

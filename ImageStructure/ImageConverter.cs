@@ -13,7 +13,7 @@ namespace ImageFormatConverter
             _imageReader = ImageReaderFactory.GetInstance().GetImageReader(sourcePath);
             
             _imageWriter = ImageWriterFactory.GetInstance()
-                    .GetImageWriter((ImageType)Enum.Parse(typeof(ImageType),convertTo,true),outputPath);
+                    .GetImageWriter((ImageWriteFormat)Enum.Parse(typeof(ImageWriteFormat),convertTo,true),outputPath);
         }
         
         public void ConvertImage()

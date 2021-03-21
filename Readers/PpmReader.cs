@@ -12,11 +12,12 @@ namespace ImageFormatConverter
         {
             var reader = new BinaryReader(new FileStream(Path, FileMode.Open));
             if (reader.ReadChar() != 'P' || reader.ReadChar() != '6')
-                return null;
+            {
+                throw new IncorrectFormatStructureException();
+            }
             reader.ReadChar();
             string width = ""; 
             string height = "";
-            string maxVal = "";
             char currChar;
             while ((currChar = reader.ReadChar()) != ' ')
             {
@@ -26,6 +27,7 @@ namespace ImageFormatConverter
             {
                 height += currChar;
             }
+            string maxVal = "";
             while ((currChar = reader.ReadChar()) != '\n')
             {
                 maxVal += currChar;
