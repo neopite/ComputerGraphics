@@ -7,13 +7,14 @@ namespace ImageConverter.Rendering
 {
     public class Rendering
     {
+        
         public void Render()
         {
             #region Consts
             Vector3 cameraPosition = new Vector3(0, 0, 0);
             Vector3 centerScreen = new Vector3(0, 0, 1);
             Vector3 camLookDirection = (centerScreen - cameraPosition).Normalize();
-            double fov = 60;
+            double fov = 90;
             double distanceToPlaneFromCamera = (cameraPosition - centerScreen).Length;
            // double realPlaneHeight = (double) (distanceToPlaneFromCamera * Math.Tan(fovInRad)); // height == width
             #endregion
@@ -28,7 +29,7 @@ namespace ImageConverter.Rendering
             /*
             Vector3 lowerLeftAnglePos = GetLowerLeftAngle(screenSize,centerScreen);
             */
-            Image image = new Image(50,50);
+            Image image = new Image(3,3);
             List<Vector3> arrayOfPixelsCenters = GetScreenPointsForRay(centerScreen,screenSize,image);
             List<Vector3> getRays = GetRays(cameraPosition,arrayOfPixelsCenters);
         }
@@ -63,25 +64,22 @@ namespace ImageConverter.Rendering
             
             double pZ = screenCenter.z; // const as for surface ( parallel oxy )
             
-            
-            
             for (int i = 0; i < imageHeight; i++)       
             {
                 double pY = screenCenter.y - screenSize / 2 + pixHeight * (i + 0.5);
                 for (int j = 0; j < imageWidth; j++)
                 {
                     double pX = screenCenter.x - screenSize / 2 + pixWidth * (j + 0.5);         //pZ const ( takes from center coord)
-                    Vector3 screenPointForRay = new Vector3(pX, pY, pZ).Normalize();
+                    Vector3 screenPointForRay = new Vector3(pX, pY, pZ);
                     listPointsForRay.Add(screenPointForRay);
                 }
             }
-
             return listPointsForRay;
         }
 
         private List<Vector3> GetRays(Vector3 originCamera , List<Vector3> listOfCentersOnScreen)
         {
-            return listOfCentersOnScreen.Select(point => point - originCamera).ToList();
+            return listOfCentersOnScreen.Select(point => (point - originCamera).Normalize()).ToList();
         }
     }
 }

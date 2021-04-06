@@ -9,6 +9,9 @@ namespace ImageConverter
     {
         public static void Main(string[] args)
         {
+            //Rendering.Rendering rendering = new Rendering.Rendering();
+            //rendering.Render();
+            
             Console.WriteLine(args.Length);
             string source = args[0].Substring(9);
             string format = args[1].Substring(14);
