@@ -32,5 +32,19 @@ namespace ImageConverter.Rendering
         {
             return new Vector3(left.x - right.x, left.y - right.y, left.z - right.z);
         }
+        public Vector3 CrossProduct(Vector3 edge2)
+        {
+            var u = this;
+            var v = edge2;
+            return new Vector3(
+                u.y * v.z - u.z * v.y,
+                u.z * v.x - u.x * v.z,
+                u.x * v.y - u.y * v.x);
+        }
+
+        public double DotProduct(Vector3 other)
+        {
+            return this.x * other.x + this.y * other.y + this.z * other.z;
+        }
     }
 }

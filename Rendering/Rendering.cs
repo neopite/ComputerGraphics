@@ -20,21 +20,31 @@ namespace ImageConverter.Rendering
             #endregion
 
             #region Shapes
-            Triangle triangle = new Triangle(new Vector3(0, 5f, -1)
-                , new Vector3(5f, -5f, -1)
-                , new Vector3(-5f, -5f, -1));
+            Triangle triangle = new Triangle(new Vector3(-0.5, -0.5, 3)
+                , new Vector3(0, 0.5, 3)
+                , new Vector3(0.5, -0.5, 3));
             #endregion
     
             double screenSize = GetScreenSize(distanceToPlaneFromCamera,fov);
             /*
             Vector3 lowerLeftAnglePos = GetLowerLeftAngle(screenSize,centerScreen);
             */
-            Image image = new Image(3,3);
+            Image image = new Image(100,100);
             List<Vector3> arrayOfPixelsCenters = GetScreenPointsForRay(centerScreen,screenSize,image);
-            List<Vector3> getRays = GetRays(cameraPosition,arrayOfPixelsCenters);
+            bool[,] matrix = new bool[image.Height,image.Width];
+            Vector3[,] rays = GetRays(cameraPosition,arrayOfPixelsCenters,image);
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    matrix[i, j] = MollerTrumbore.RayIntersectsTriangle(cameraPosition, rays[i, j], triangle);
+                    Console.Write(matrix[i,j]?"X ":". ");
+                }
+                Console.WriteLine();
+            }
         }
         
-        //Assume that width == height
+        //Assume tha    t width == height
         private double GetScreenSize(double distanceFromCamToScreen , double fov)
         {
             double rad = DegreeToRad(fov);
@@ -77,9 +87,18 @@ namespace ImageConverter.Rendering
             return listPointsForRay;
         }
 
-        private List<Vector3> GetRays(Vector3 originCamera , List<Vector3> listOfCentersOnScreen)
+        private Vector3[,] GetRays(Vector3 originCamera , List<Vector3> listOfCentersOnScreen , Image image)
         {
-            return listOfCentersOnScreen.Select(point => (point - originCamera).Normalize()).ToList();
+            Vector3[,] screenRays = new Vector3[image.Width,image.Height];
+            for (int i = 0; i < screenRays.GetLength(0); i++)
+            {
+                for (int j = 0; j < screenRays.GetLength(1); j++)
+                {
+                    screenRays[i, j] = (listOfCentersOnScreen[(i * screenRays.GetLength(1)) + j] - originCamera).Normalize();
+                }
+            }
+            return screenRays;
         }
+        
     }
 }
