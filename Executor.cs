@@ -10,7 +10,7 @@ namespace ImageConverter
         public static void Main(string[] args)
         {
             //Rendering.Rendering rendering = new Rendering.Rendering();
-            //rendering.Render();
+           // new BmpWriter("D:\\Study\\CompGraphics\\ComputerGraphics\\Images").WriteImage(rendering.Render());
             
             Console.WriteLine(args.Length);
             string source = args[0].Substring(9);
@@ -23,6 +23,7 @@ namespace ImageConverter
                 image.ConvertImage();
             }
             else throw new OutputFormatNotExistedException(format);
+            
         }
     }
 }

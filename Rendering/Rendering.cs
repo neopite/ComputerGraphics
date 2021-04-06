@@ -7,8 +7,10 @@ namespace ImageConverter.Rendering
 {
     public class Rendering
     {
+        private static readonly Color _blackPixel = new Color(0, 0, 0);
+        private static readonly Color _redPixel = new Color(255, 0, 0);
         
-        public void Render()
+        public Image Render()
         {
             #region Consts
             Vector3 cameraPosition = new Vector3(0, 0, 0);
@@ -16,32 +18,44 @@ namespace ImageConverter.Rendering
             Vector3 camLookDirection = (centerScreen - cameraPosition).Normalize();
             double fov = 90;
             double distanceToPlaneFromCamera = (cameraPosition - centerScreen).Length;
-           // double realPlaneHeight = (double) (distanceToPlaneFromCamera * Math.Tan(fovInRad)); // height == width
             #endregion
 
+            
             #region Shapes
-            Triangle triangle = new Triangle(new Vector3(-0.5, -0.5, 3)
-                , new Vector3(0, 0.5, 3)
-                , new Vector3(0.5, -0.5, 3));
+            Triangle triangle = new Triangle(new Vector3(-0.5, -0.5, 5)
+                , new Vector3(0, 0.5, 5)
+                , new Vector3(0.5, -0.5, 5));
+            Triangle triangle1 = new Triangle(new Vector3(3, 3, 5)
+                , new Vector3(5, 1, 5)
+                , new Vector3(4, 4, 5));
+            List<Triangle> listOfTriangles = new List<Triangle>();
+            listOfTriangles.Add(triangle);
+            listOfTriangles.Add(triangle1);
             #endregion
     
             double screenSize = GetScreenSize(distanceToPlaneFromCamera,fov);
-            /*
-            Vector3 lowerLeftAnglePos = GetLowerLeftAngle(screenSize,centerScreen);
-            */
-            Image image = new Image(100,100);
+            Image image = new Image(500,500);
+            ImagePalette imagePalette = new ImagePalette();
             List<Vector3> arrayOfPixelsCenters = GetScreenPointsForRay(centerScreen,screenSize,image);
-            bool[,] matrix = new bool[image.Height,image.Width];
             Vector3[,] rays = GetRays(cameraPosition,arrayOfPixelsCenters,image);
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int i = 0; i < rays.GetLength(0); i++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < rays.GetLength(1); j++)
                 {
-                    matrix[i, j] = MollerTrumbore.RayIntersectsTriangle(cameraPosition, rays[i, j], triangle);
-                    Console.Write(matrix[i,j]?"X ":". ");
+                    bool isFilled = false;
+                    foreach (Triangle tr in listOfTriangles)
+                    {
+                        isFilled = MollerTrumbore.RayIntersectsTriangle(cameraPosition, rays[i, j], tr);
+                        if(isFilled) break;
+                    }
+                    if(isFilled) imagePalette.ListOfPixels.Add(new Pixel(i, j, _redPixel));
+                    else imagePalette.ListOfPixels.Add(new Pixel(i, j, _blackPixel));
+                    isFilled = false;
                 }
-                Console.WriteLine();
             }
+
+            image.ImagePalette = imagePalette;
+            return image;
         }
         
         //Assume tha    t width == height
