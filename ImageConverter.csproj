@@ -5,4 +5,9 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Aspose.3D" Version="21.4.0" />
+      <PackageReference Include="CjClutter.ObjLoader" Version="1.0.0" />
+    </ItemGroup>
+
 </Project>

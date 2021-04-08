@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ImageConverter.ImageStructure;
+using ObjLoader.Loader.Loaders;
 
 namespace ImageConverter.Rendering
 {
@@ -13,8 +15,8 @@ namespace ImageConverter.Rendering
         public Image Render()
         {
             #region Consts
-            Vector3 cameraPosition = new Vector3(0, 0, 0);
-            Vector3 centerScreen = new Vector3(0, 0, 1);
+            Vector3 cameraPosition = new Vector3(0, 0, -1);
+            Vector3 centerScreen = new Vector3(0, 0, 0);
             Vector3 camLookDirection = (centerScreen - cameraPosition).Normalize();
             double fov = 90;
             double distanceToPlaneFromCamera = (cameraPosition - centerScreen).Length;
@@ -32,7 +34,9 @@ namespace ImageConverter.Rendering
             listOfTriangles.Add(triangle);
             listOfTriangles.Add(triangle1);
             #endregion
-    
+
+            List<Triangle> bluadCow = ParseObj();
+            
             double screenSize = GetScreenSize(distanceToPlaneFromCamera,fov);
             Image image = new Image(500,500);
             ImagePalette imagePalette = new ImagePalette();
@@ -43,7 +47,7 @@ namespace ImageConverter.Rendering
                 for (int j = 0; j < rays.GetLength(1); j++)
                 {
                     bool isFilled = false;
-                    foreach (Triangle tr in listOfTriangles)
+                    foreach (Triangle tr in bluadCow)
                     {
                         isFilled = MollerTrumbore.RayIntersectsTriangle(cameraPosition, rays[i, j], tr);
                         if(isFilled) break;
@@ -112,6 +116,36 @@ namespace ImageConverter.Rendering
                 }
             }
             return screenRays;
+        }
+
+        private List<Triangle> ParseObj()
+        {
+            var objLoaderFactory = new ObjLoaderFactory();
+            var objLoader = objLoaderFactory.Create();
+            var fileStream = new FileStream("D:\\Study\\CompGraphics\\ComputerGraphics\\Images\\cow.obj",FileMode.Open);
+            var result = objLoader.Load(fileStream);
+            List<Triangle> cow = new List<Triangle>();
+            for (int i = 0; i < result.Groups.Count; i++)
+            {
+                for (int j = 0; j < result.Groups[i].Faces.Count; j++)
+                {
+                    Vector3 a = new Vector3(result.Vertices[result.Groups[i].Faces[j][0].VertexIndex - 1].X,
+                        result.Vertices[result.Groups[i].Faces[j][0].VertexIndex - 1].Y,
+                        result.Vertices[result.Groups[i].Faces[j][0].VertexIndex - 1].Z);
+                    
+                    Vector3 b =new Vector3(result.Vertices[result.Groups[i].Faces[j][1].VertexIndex - 1].X,
+                        result.Vertices[result.Groups[i].Faces[j][1].VertexIndex - 1].Y,
+                        result.Vertices[result.Groups[i].Faces[j][1].VertexIndex - 1].Z);
+
+                    Vector3 c =new Vector3(result.Vertices[result.Groups[i].Faces[j][2].VertexIndex - 1].X,
+                        result.Vertices[result.Groups[i].Faces[j][2].VertexIndex - 1].Y,
+                        result.Vertices[result.Groups[i].Faces[j][2].VertexIndex - 1].Z);
+                    
+                    cow.Add(new Triangle(a,b,c));
+                }
+            }
+
+            return cow;
         }
         
     }
