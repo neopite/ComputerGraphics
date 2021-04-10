@@ -12,7 +12,7 @@ namespace ImageConverter.Rendering
         private static readonly Color _blackPixel = new Color(0, 0, 0);
         private static readonly Color _redPixel = new Color(255, 0, 0);
         
-        public Image Render()
+        public Image Render(string inputPath)
         {
             #region Consts
             Vector3 cameraPosition = new Vector3(0, 0, -1);
@@ -21,21 +21,8 @@ namespace ImageConverter.Rendering
             double fov = 90;
             double distanceToPlaneFromCamera = (cameraPosition - centerScreen).Length;
             #endregion
-
             
-            #region Shapes
-            Triangle triangle = new Triangle(new Vector3(-0.5, -0.5, 5)
-                , new Vector3(0, 0.5, 5)
-                , new Vector3(0.5, -0.5, 5));
-            Triangle triangle1 = new Triangle(new Vector3(3, 3, 5)
-                , new Vector3(5, 1, 5)
-                , new Vector3(4, 4, 5));
-            List<Triangle> listOfTriangles = new List<Triangle>();
-            listOfTriangles.Add(triangle);
-            listOfTriangles.Add(triangle1);
-            #endregion
-
-            List<Triangle> bluadCow = ParseObj();
+            List<Triangle> renderObject = new Parser().ParseObject(inputPath);
             
             double screenSize = GetScreenSize(distanceToPlaneFromCamera,fov);
             Image image = new Image(500,500);
@@ -47,7 +34,7 @@ namespace ImageConverter.Rendering
                 for (int j = 0; j < rays.GetLength(1); j++)
                 {
                     bool isFilled = false;
-                    foreach (Triangle tr in bluadCow)
+                    foreach (Triangle tr in renderObject)
                     {
                         isFilled = MollerTrumbore.RayIntersectsTriangle(cameraPosition, rays[i, j], tr);
                         if(isFilled) break;
@@ -74,12 +61,7 @@ namespace ImageConverter.Rendering
         {
             return  degree / 180f * Math.PI;
         }
-
-        /*private Vector3 GetLowerLeftAngle(double screenSize,Vector3 screenCenter)
-        {
-            return screenCenter - new Vector3(screenSize/2,screenSize/2,0);
-        }*/
-
+        
         private List<Vector3> GetScreenPointsForRay(Vector3 screenCenter, double  screenSize , Image goalImage)
         {
             List<Vector3> listPointsForRay = new List<Vector3>();
@@ -117,36 +99,5 @@ namespace ImageConverter.Rendering
             }
             return screenRays;
         }
-
-        private List<Triangle> ParseObj()
-        {
-            var objLoaderFactory = new ObjLoaderFactory();
-            var objLoader = objLoaderFactory.Create();
-            var fileStream = new FileStream("D:\\Study\\CompGraphics\\ComputerGraphics\\Images\\cow.obj",FileMode.Open);
-            var result = objLoader.Load(fileStream);
-            List<Triangle> cow = new List<Triangle>();
-            for (int i = 0; i < result.Groups.Count; i++)
-            {
-                for (int j = 0; j < result.Groups[i].Faces.Count; j++)
-                {
-                    Vector3 a = new Vector3(result.Vertices[result.Groups[i].Faces[j][0].VertexIndex - 1].X,
-                        result.Vertices[result.Groups[i].Faces[j][0].VertexIndex - 1].Y,
-                        result.Vertices[result.Groups[i].Faces[j][0].VertexIndex - 1].Z);
-                    
-                    Vector3 b =new Vector3(result.Vertices[result.Groups[i].Faces[j][1].VertexIndex - 1].X,
-                        result.Vertices[result.Groups[i].Faces[j][1].VertexIndex - 1].Y,
-                        result.Vertices[result.Groups[i].Faces[j][1].VertexIndex - 1].Z);
-
-                    Vector3 c =new Vector3(result.Vertices[result.Groups[i].Faces[j][2].VertexIndex - 1].X,
-                        result.Vertices[result.Groups[i].Faces[j][2].VertexIndex - 1].Y,
-                        result.Vertices[result.Groups[i].Faces[j][2].VertexIndex - 1].Z);
-                    
-                    cow.Add(new Triangle(a,b,c));
-                }
-            }
-
-            return cow;
-        }
-        
     }
 }
