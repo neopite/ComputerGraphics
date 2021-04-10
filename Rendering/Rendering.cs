@@ -15,8 +15,8 @@ namespace ImageConverter.Rendering
         public Image Render(string inputPath)
         {
             #region Consts
-            Vector3 cameraPosition = new Vector3(0, 0, -1);
-            Vector3 centerScreen = new Vector3(0, 0, 0);
+            Vector3 cameraPosition = new Vector3(0, 0, -2);
+            Vector3 centerScreen = new Vector3(0, 0, -1);
             Vector3 camLookDirection = (centerScreen - cameraPosition).Normalize();
             double fov = 90;
             double distanceToPlaneFromCamera = (cameraPosition - centerScreen).Length;
@@ -25,13 +25,13 @@ namespace ImageConverter.Rendering
             List<Triangle> renderObject = new Parser().ParseObject(inputPath);
             
             double screenSize = GetScreenSize(distanceToPlaneFromCamera,fov);
-            Image image = new Image(500,500);
+            Image image = new Image(1000,1000);
             ImagePalette imagePalette = new ImagePalette();
             List<Vector3> arrayOfPixelsCenters = GetScreenPointsForRay(centerScreen,screenSize,image);
             Vector3[,] rays = GetRays(cameraPosition,arrayOfPixelsCenters,image);
-            for (int i = 0; i < rays.GetLength(0); i++)
+            for (int i = rays.GetLength(0) - 1; i >= 0; i--)
             {
-                for (int j = 0; j < rays.GetLength(1); j++)
+                for (int j = rays.GetLength(1) - 1; j >= 0 ; j--)
                 {
                     bool isFilled = false;
                     foreach (Triangle tr in renderObject)
@@ -39,7 +39,7 @@ namespace ImageConverter.Rendering
                         isFilled = MollerTrumbore.RayIntersectsTriangle(cameraPosition, rays[i, j], tr);
                         if(isFilled) break;
                     }
-                    if(isFilled) imagePalette.ListOfPixels.Add(new Pixel(i, j, _redPixel));
+                    if (isFilled) imagePalette.ListOfPixels.Add(new Pixel(i, j, _redPixel));
                     else imagePalette.ListOfPixels.Add(new Pixel(i, j, _blackPixel));
                     isFilled = false;
                 }
@@ -62,7 +62,7 @@ namespace ImageConverter.Rendering
             return  degree / 180f * Math.PI;
         }
         
-        private List<Vector3> GetScreenPointsForRay(Vector3 screenCenter, double  screenSize , Image goalImage)
+        private List<Vector3> GetScreenPointsForRay(Vector3 screenCenter, double screenSize , Image goalImage)
         {
             List<Vector3> listPointsForRay = new List<Vector3>();
             
@@ -71,7 +71,8 @@ namespace ImageConverter.Rendering
 
             double pixHeight = screenSize / imageHeight;
             double pixWidth = screenSize / imageWidth;
-            
+
+
             double pZ = screenCenter.z; // const as for surface ( parallel oxy )
             
             for (int i = 0; i < imageHeight; i++)       

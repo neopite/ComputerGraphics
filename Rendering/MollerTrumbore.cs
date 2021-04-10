@@ -15,7 +15,6 @@ namespace ImageConverter.Rendering
             var edge2 = vertex2 - vertex0;
             var h = rayVector.CrossProduct(edge2);
             var a = edge1.DotProduct(h);
-            var EPSILON = 1e-5f;
             if (a > -EPSILON && a < EPSILON)
             {
                 return false;
