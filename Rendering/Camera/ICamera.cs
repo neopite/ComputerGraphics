@@ -1,16 +1,15 @@
-﻿namespace ImageConverter.Rendering
+﻿using Ninject;
+
+namespace ImageConverter.Rendering
 {
     public abstract class ICamera
     {
         public Vector3 Origin { get;private set; }
-        public Vector3 LookDirection { get;private set; }
-        public double Fov { get;private set; }
-
-        protected ICamera(Vector3 origin, Vector3 lookDirection, double fov)
+        
+        [Inject]
+        protected ICamera(Vector3 origin)
         {
             Origin = origin;
-            LookDirection = lookDirection;
-            Fov = fov;
         }
     }
 }
