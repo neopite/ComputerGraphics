@@ -18,8 +18,10 @@ namespace ImageConverter.Rendering
         public Box leftSubBox;
         public Box rightSubBox;
         
-        public Box()
+        public Box(List<Triangle> triangles)
         {
+            this.triangles = triangles;
+            
             minX = triangles.Select(triangle => Math.Min(Math.Min(triangle.a.x, triangle.b.x), triangle.c.x)).Min();
             maxX = triangles.Select(triangle => Math.Max(Math.Max(triangle.a.x, triangle.b.x), triangle.c.x)).Max();
             
