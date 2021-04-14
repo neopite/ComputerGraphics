@@ -1,12 +1,13 @@
 ﻿using System;
+using ImageConverter.Rendering.Renderer.Calculations;
 
 namespace ImageConverter.Rendering
 {
-    public class MollerTrumbore
+    public class MollerTrumbore : IRayIntersactionCalculation
     {
         private static readonly double EPSILON = 0.0000001;
-
-        public static Boolean RayIntersectsTriangle(Vector3 rayOrigin , Vector3 rayVector , Triangle inTriangle)
+        
+        bool IRayIntersactionCalculation.IsRayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Triangle inTriangle)
         {
             var vertex0 = inTriangle.a;
             var vertex1 = inTriangle.b;

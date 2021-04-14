@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ImageConverter.Rendering.Renderer;
 using ImageConverter.Writers;
 using ImageFormatConverter;
 
@@ -9,8 +10,8 @@ namespace ImageConverter
     {
         public static void Main(string[] args)
         {
-            Rendering.Rendering rendering = new Rendering.Rendering();
-            new BmpWriter("D:\\Study\\CompAssignment\\ComputerGraphics\\Images").WriteImage(rendering.Render("D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj"));
+            IRenderer rendering = new Rendering.Rendering();
+            new BmpWriter("D:\\Study\\CompAssignment\\ComputerGraphics\\Images").WriteImage(rendering.RenderObj("D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj"));
             
             /*Console.WriteLine(args.Length);
             string source = args[0].Substring(9);

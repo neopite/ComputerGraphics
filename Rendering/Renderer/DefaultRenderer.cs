@@ -3,26 +3,30 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ImageConverter.ImageStructure;
+using ImageConverter.Rendering.Renderer;
+using ImageConverter.Rendering.Renderer.Calculations;
 using ObjLoader.Loader.Loaders;
 
 namespace ImageConverter.Rendering
 {
-    public class Rendering
+    public class Rendering : IRenderer
     {
         private static readonly Color _blackPixel = new Color(0, 0, 0);
         private static readonly Color _redPixel = new Color(255, 0, 0);
         private ICamera _camera;
         private double _actualScreenSize; //Square screen
+        private IRayIntersactionCalculation _rayIntersactionSolver;
         
-        public Image Render(string inputPath)
+        public Image RenderObj(string inputPath)
         {
+            _rayIntersactionSolver = new MollerTrumbore();
             #region CameraSettings
             Vector3 cameraPosition = new Vector3(0, 0, -2);
             Vector3 centerScreen = new Vector3(0, 0, -1);
             Vector3 camLookDirection = (centerScreen - cameraPosition).Normalize();
             _camera = new StaticCamera(cameraPosition,camLookDirection,90);
             #endregion
-            _actualScreenSize = GetScreenSize((_camera.Origin - centerScreen).Length,_camera.Fov);
+            _actualScreenSize = MathCalculations.GetActualScreenSize((_camera.Origin - centerScreen).Length,_camera.Fov);
 
             List<Triangle> renderObject = GetModel(inputPath);
             Image image = new Image(1000,1000);
@@ -31,19 +35,8 @@ namespace ImageConverter.Rendering
             image.ImagePalette = GetRayIntersactionWithModel(rays,renderObject);
             return image;
         }
-        
-        //Assume that width == height
-        private double GetScreenSize(double distanceFromCamToScreen , double fov)
-        {
-            double rad = DegreeToRad(fov);
-            double size = 2 * distanceFromCamToScreen * Math.Tan(rad/2);
-            return size;
-        }
 
-        private static double DegreeToRad(double degree)
-        {
-            return  degree / 180f * Math.PI;
-        }
+        
         
         private List<Vector3> GetScreenPointsForRay(Vector3 screenCenter, double screenSize , Image goalImage)
         {
@@ -94,7 +87,7 @@ namespace ImageConverter.Rendering
                     bool isFilled = false;
                     foreach (Triangle tr in renderObject)
                     {
-                        isFilled = MollerTrumbore.RayIntersectsTriangle(_camera.Origin, rays[i, j], tr);
+                        isFilled = _rayIntersactionSolver.IsRayIntersectsTriangle(_camera.Origin, rays[i, j], tr);
                         if(isFilled) break;
                     }
                     if (isFilled) imagePalette.ListOfPixels.Add(new Pixel(i, j, _redPixel));
