@@ -11,45 +11,28 @@ namespace ImageConverter.Rendering
     {
         private static readonly Color _blackPixel = new Color(0, 0, 0);
         private static readonly Color _redPixel = new Color(255, 0, 0);
+        private ICamera _camera;
+        private double _actualScreenSize; //Square screen
         
         public Image Render(string inputPath)
         {
-            #region Consts
+            #region CameraSettings
             Vector3 cameraPosition = new Vector3(0, 0, -2);
             Vector3 centerScreen = new Vector3(0, 0, -1);
             Vector3 camLookDirection = (centerScreen - cameraPosition).Normalize();
-            double fov = 90;
-            double distanceToPlaneFromCamera = (cameraPosition - centerScreen).Length;
+            _camera = new StaticCamera(cameraPosition,camLookDirection,90);
             #endregion
-            
-            List<Triangle> renderObject = new Parser().ParseObject(inputPath);
-            
-            double screenSize = GetScreenSize(distanceToPlaneFromCamera,fov);
-            Image image = new Image(1000,1000);
-            ImagePalette imagePalette = new ImagePalette();
-            List<Vector3> arrayOfPixelsCenters = GetScreenPointsForRay(centerScreen,screenSize,image);
-            Vector3[,] rays = GetRays(cameraPosition,arrayOfPixelsCenters,image);
-            for (int i = rays.GetLength(0) - 1; i >= 0; i--)
-            {
-                for (int j = rays.GetLength(1) - 1; j >= 0 ; j--)
-                {
-                    bool isFilled = false;
-                    foreach (Triangle tr in renderObject)
-                    {
-                        isFilled = MollerTrumbore.RayIntersectsTriangle(cameraPosition, rays[i, j], tr);
-                        if(isFilled) break;
-                    }
-                    if (isFilled) imagePalette.ListOfPixels.Add(new Pixel(i, j, _redPixel));
-                    else imagePalette.ListOfPixels.Add(new Pixel(i, j, _blackPixel));
-                    isFilled = false;
-                }
-            }
+            _actualScreenSize = GetScreenSize((_camera.Origin - centerScreen).Length,_camera.Fov);
 
-            image.ImagePalette = imagePalette;
+            List<Triangle> renderObject = GetModel(inputPath);
+            Image image = new Image(1000,1000);
+            List<Vector3> arrayOfPixelsCenters = GetScreenPointsForRay(centerScreen,_actualScreenSize,image);
+            Vector3[,] rays = GetRays(_camera.Origin,arrayOfPixelsCenters,image);
+            image.ImagePalette = GetRayIntersactionWithModel(rays,renderObject);
             return image;
         }
         
-        //Assume tha    t width == height
+        //Assume that width == height
         private double GetScreenSize(double distanceFromCamToScreen , double fov)
         {
             double rad = DegreeToRad(fov);
@@ -99,6 +82,33 @@ namespace ImageConverter.Rendering
                 }
             }
             return screenRays;
+        }
+
+        private ImagePalette GetRayIntersactionWithModel(Vector3[,] rays , List<Triangle> renderObject)
+        {
+            ImagePalette imagePalette = new ImagePalette();
+            for (int i = rays.GetLength(0) - 1; i >= 0; i--)
+            {
+                for (int j = rays.GetLength(1) - 1; j >= 0 ; j--)
+                {
+                    bool isFilled = false;
+                    foreach (Triangle tr in renderObject)
+                    {
+                        isFilled = MollerTrumbore.RayIntersectsTriangle(_camera.Origin, rays[i, j], tr);
+                        if(isFilled) break;
+                    }
+                    if (isFilled) imagePalette.ListOfPixels.Add(new Pixel(i, j, _redPixel));
+                    else imagePalette.ListOfPixels.Add(new Pixel(i, j, _blackPixel));
+                    isFilled = false;
+                }
+            }
+
+            return imagePalette;
+        }
+
+        private List<Triangle> GetModel(string inputPath)
+        {
+            return  new Parser().ParseObject(inputPath);
         }
     }
 }
