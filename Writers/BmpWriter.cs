@@ -2,14 +2,21 @@
 using ImageConverter.ImageStructure;
 using ImageConverter.Writers.FormatData;
 using ImageFormatConverter;
+using Ninject;
 
 namespace ImageConverter.Writers
 {
-    public class BmpWriter : ImageWriter
+    public class BmpWriter : IImageWriter
     {
+        
+        [Inject]
         public BmpWriter(string outputPath) : base(outputPath)
         {
             
+        }
+
+        public BmpWriter()
+        {
         }
 
         public override void WriteImage(Image image)

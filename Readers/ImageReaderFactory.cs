@@ -20,7 +20,7 @@ namespace ImageConverter.Readers
             return instance;
         }
         
-        public ImageReader GetImageReader(string sourcePath)
+        public IImageReader GetImageReader(string sourcePath)
         {
             ImageType imageType = Util.ExtractImageTypeFromImageSignature(sourcePath);
             switch (imageType)

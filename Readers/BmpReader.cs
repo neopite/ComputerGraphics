@@ -3,7 +3,7 @@ using ImageFormatConverter;
 
 namespace ImageConverter.Readers
 {
-    public class BmpReader : ImageReader
+    public class BmpReader : IImageReader
     {
         
 
@@ -14,6 +14,11 @@ namespace ImageConverter.Readers
         public override Image ReadImage()
         {
             throw new System.NotImplementedException();
+        }
+
+        public override string GetReader()
+        {
+            return "bmp";
         }
     }
 }

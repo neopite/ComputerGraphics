@@ -4,7 +4,7 @@ using ImageFormatConverter;
 
 namespace ImageConverter.Readers
 {
-    public class PpmReader : ImageReader
+    public class PpmReader : IImageReader
     {
         
         public PpmReader(string path) : base(path)
@@ -44,6 +44,11 @@ namespace ImageConverter.Readers
                 }
             }
             return bitmap;
+        }
+
+        public override string GetReader()
+        {
+            return "ppm";
         }
     }
 }

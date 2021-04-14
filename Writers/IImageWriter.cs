@@ -1,15 +1,21 @@
 ﻿using ImageConverter.ImageStructure;
 using ImageFormatConverter;
+using Ninject;
 
 namespace ImageConverter.Writers
 {
-    public abstract class ImageWriter
+    public abstract class IImageWriter
     {
         public string OutputPath { get; }
 
-        public ImageWriter(string outputPath)
+        [Inject]
+        public IImageWriter(string outputPath)
         {
             OutputPath =  outputPath;
+        }
+        
+        protected IImageWriter()
+        {
         }
 
         public abstract void WriteImage(Image image);

@@ -8,6 +8,7 @@
     <ItemGroup>
       <PackageReference Include="Aspose.3D" Version="21.4.0" />
       <PackageReference Include="CjClutter.ObjLoader" Version="1.0.0" />
+      <PackageReference Include="Ninject" Version="3.3.4" />
     </ItemGroup>
 
 </Project>

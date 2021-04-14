@@ -9,7 +9,7 @@ using ObjLoader.Loader.Loaders;
 
 namespace ImageConverter.Rendering
 {
-    public class Rendering : IRenderer
+    public class DefaultRenderer : IRenderer
     {
         private static readonly Color _blackPixel = new Color(0, 0, 0);
         private static readonly Color _redPixel = new Color(255, 0, 0);
@@ -17,7 +17,7 @@ namespace ImageConverter.Rendering
         private double _actualScreenSize; //Square screen
         private IRayIntersactionCalculation _rayIntersactionSolver;
         
-        public Image RenderObj(string inputPath)
+        public override Image RenderObj(string inputPath)
         {
             _rayIntersactionSolver = new MollerTrumbore();
             #region CameraSettings
@@ -97,11 +97,6 @@ namespace ImageConverter.Rendering
             }
 
             return imagePalette;
-        }
-
-        private List<Triangle> GetModel(string inputPath)
-        {
-            return  new Parser().ParseObject(inputPath);
         }
     }
 }

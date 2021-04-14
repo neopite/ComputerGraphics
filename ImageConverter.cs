@@ -6,8 +6,8 @@ namespace ImageConverter
 {
     public class ImageConverter
     {
-        private readonly ImageReader _imageReader;
-        private readonly ImageWriter _imageWriter;
+        private readonly IImageReader _imageReader;
+        private readonly IImageWriter _imageWriter;
 
         public ImageConverter(string sourcePath , string convertTo,string outputPath)
         {

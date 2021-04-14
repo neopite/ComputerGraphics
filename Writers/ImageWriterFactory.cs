@@ -20,7 +20,7 @@ namespace ImageConverter.Writers
             return instance;
         }
         
-        public ImageWriter GetImageWriter(ImageWriteFormat imageType,string outputPath)
+        public IImageWriter GetImageWriter(ImageWriteFormat imageType,string outputPath)
         {
             switch (imageType)
             {
