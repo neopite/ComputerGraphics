@@ -23,22 +23,40 @@ namespace ImageConverter.Rendering
             #endregion
             
             List<Triangle> renderObject = new Parser().ParseObject(inputPath);
-            
+
+
             double screenSize = GetScreenSize(distanceToPlaneFromCamera,fov);
             Image image = new Image(1000,1000);
             ImagePalette imagePalette = new ImagePalette();
             List<Vector3> arrayOfPixelsCenters = GetScreenPointsForRay(centerScreen,screenSize,image);
             Vector3[,] rays = GetRays(cameraPosition,arrayOfPixelsCenters,image);
+            
+            Tree tree = new Tree(renderObject);
+            
+            
             for (int i = rays.GetLength(0) - 1; i >= 0; i--)
             {
                 for (int j = rays.GetLength(1) - 1; j >= 0 ; j--)
                 {
                     bool isFilled = false;
-                    foreach (Triangle tr in renderObject)
+                    Box box = tree.AppropriateBoxForRay(rays[i, j], tree.root);
+                    if (box != null)
+                    {
+                        foreach (var tr in box.triangles)
+                        {
+                            isFilled = MollerTrumbore.RayIntersectsTriangle(cameraPosition, rays[i, j], tr);
+                            if (isFilled)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    /*foreach (Triangle tr in renderObject)
                     {
                         isFilled = MollerTrumbore.RayIntersectsTriangle(cameraPosition, rays[i, j], tr);
                         if(isFilled) break;
-                    }
+                    }*/
+                    
                     if (isFilled) imagePalette.ListOfPixels.Add(new Pixel(i, j, _redPixel));
                     else imagePalette.ListOfPixels.Add(new Pixel(i, j, _blackPixel));
                     isFilled = false;
