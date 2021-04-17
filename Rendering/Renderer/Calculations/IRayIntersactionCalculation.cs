@@ -1,9 +1,11 @@
 ﻿using System;
+using ImageConverter.Rendering.Rays;
+using ImageConverter.Rendering.Rays.Implementation;
 
 namespace ImageConverter.Rendering.Renderer.Calculations
 {
     public interface IRayIntersactionCalculation
     {
-        public Boolean IsRayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Triangle inTriangle);
+        public  Boolean RayIntersectsTriangle(IRay ray, Triangle inTriangle);
     }
 }

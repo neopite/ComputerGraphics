@@ -31,7 +31,7 @@ namespace ImageConverter
             container.Bind<IRenderer>().To<DefaultRenderer>();
             container.Bind<IRayIntersactionCalculation>().To<MollerTrumbore>();
             container.Bind<Vector3>().To<Vector3>().Named("CameraPos").WithConstructorArgument("x", 0.0)
-                .WithConstructorArgument("y",0.0).WithConstructorArgument("z", -2.0);
+                .WithConstructorArgument("y",0.0).WithConstructorArgument("z", 0.0);
             container.Bind<ICamera>().To<StaticCamera>().WithConstructorArgument("Origin",container.Get<Vector3>("CameraPos"));
             
             return container;

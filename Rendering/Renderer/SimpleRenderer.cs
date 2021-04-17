@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Aspose.ThreeD.Entities;
 using ImageConverter.ImageStructure;
 using ImageConverter.Rendering.Rays;
 using ImageConverter.Rendering.Rays.Implementation;
@@ -31,21 +32,21 @@ namespace ImageConverter.Rendering
             _actualScreenSize = MathCalculations.GetActualScreenSize((Camera.Origin - centerScreen).Length,90);
 
             List<Triangle> renderObject = GetModel(inputPath);
-            List<Vector3> arrayOfPixelsCenters = GetScreenPointsForRay(centerScreen,_actualScreenSize,image);
-            IRay[,] rays = GetRays(Camera.Origin,arrayOfPixelsCenters,image);
+            List<Vector3> arrayOfPixelsCenters = GetScreenPointsForRay(_actualScreenSize,image);
+            IRay[,] rays = GetRays(Camera,arrayOfPixelsCenters,image);
             image.ImagePalette = GetRayIntersactionWithModel(rays,renderObject);
             return image;
         }
         
-        private IRay[,] GetRays(Vector3 originCamera , List<Vector3> listOfCentersOnScreen , Image image)
+        private IRay[,] GetRays(ICamera camera , List<Vector3> listOfCentersOnScreen , Image image)
         {
             IRay[,] screenRays = new IRay[image.Width,image.Height];
             for (int i = 0; i < screenRays.GetLength(0); i++)
             {
                 for (int j = 0; j < screenRays.GetLength(1); j++)
                 {
-                    screenRays[i, j] = new Ray(originCamera,
-                        (listOfCentersOnScreen[(i * screenRays.GetLength(1)) + j] - originCamera));
+                    screenRays[i, j] = new Ray(camera.Origin,
+                        (listOfCentersOnScreen[(i * screenRays.GetLength(1)) + j] - camera.Origin));
                 }
             }
             return screenRays;
@@ -61,7 +62,7 @@ namespace ImageConverter.Rendering
                     bool isFilled = false;
                     foreach (Triangle tr in renderObject)
                     {
-                        isFilled = RayIntersactionSolver.IsRayIntersectsTriangle(Camera.Origin, rays[i, j].Direction, tr);
+                        isFilled = RayIntersactionSolver.RayIntersectsTriangle(rays[i, j],tr);
                         if(isFilled) break;
                     }
                     if (isFilled) imagePalette.ListOfPixels.Add(new Pixel(i, j, _redPixel));

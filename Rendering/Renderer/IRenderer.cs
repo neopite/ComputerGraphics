@@ -28,31 +28,26 @@ namespace ImageConverter.Rendering.Renderer
             return  _objectParser.ParseObject(inputPath);
         }
         
-        public List<Vector3> GetScreenPointsForRay(Vector3 screenCenter, double screenSize , Image goalImage)
+        public List<Vector3> GetScreenPointsForRay(double screenSize , Image goalImage)
         {
             List<Vector3> listPointsForRay = new List<Vector3>();
             
             int imageHeight = goalImage.Height;
             int imageWidth = goalImage.Width;
-
-            double pixHeight = screenSize / imageHeight;
-            double pixWidth = screenSize / imageWidth;
-
-
-            double pZ = screenCenter.z; // const as for surface ( parallel oxy )
             
-            for (int i = 0; i < imageHeight; i++)       
+            double pZ = -1; 
+            
+            for (int y = 0; y < imageHeight; y++)       
             {
-                double pY = screenCenter.y - screenSize / 2 + pixHeight * (i + 0.5);
-                for (int j = 0; j < imageWidth; j++)
+                for (int x = 0; x < imageWidth; x++)
                 {
-                    double pX = screenCenter.x - screenSize / 2 + pixWidth * (j + 0.5);         //pZ const ( takes from center coord)
-                    Vector3 screenPointForRay = new Vector3(pX, pY, pZ);
-                    listPointsForRay.Add(screenPointForRay);
+                    double pX = (2 * (x + 0.5) / imageWidth) - 1;
+                    double pY = 1 - 2 * ((y + 0.5) / imageHeight);
+                    Vector3 rayInWorldSpace = new Vector3(pX, pY, pZ);
+                    listPointsForRay.Add(rayInWorldSpace);
                 }
             }
             return listPointsForRay;
         }
-        
     }
 }

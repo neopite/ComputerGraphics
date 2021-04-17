@@ -41,7 +41,7 @@ namespace ImageConverter.Writers
             writer.Write(BmpMetaData.colorTableEntries);
             writer.Write(BmpMetaData.importantColors);
 
-            for (int i = image.Height - 1; i >= 0; i--)
+            for (int i = 0; i < image.Height; i++)
             {
                 var rowOfPixels = image.ImagePalette.ListOfPixels.GetRange(i * image.Width, image.Width);
                 foreach (var pixel in rowOfPixels)
