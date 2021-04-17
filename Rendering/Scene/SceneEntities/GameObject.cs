@@ -9,5 +9,9 @@
         {
             Transform = transform;
         }
+
+        public GameObject()
+        {
+        }
     }
 }

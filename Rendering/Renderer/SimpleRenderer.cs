@@ -31,10 +31,12 @@ namespace ImageConverter.Rendering
             #endregion
             _actualScreenSize = MathCalculations.GetActualScreenSize((Camera.Origin - centerScreen).Length,90);
 
-            List<Triangle> renderObject = GetModel(inputPath);
+            Mesh objectMesh = new Mesh(GetModel(inputPath));
+            GameObject gameObject = new GameObject();
+            gameObject.MeshRenderer = objectMesh;
             List<Vector3> arrayOfPixelsCenters = GetScreenPointsForRay(_actualScreenSize,image);
             IRay[,] rays = GetRays(Camera,arrayOfPixelsCenters,image);
-            image.ImagePalette = GetRayIntersactionWithModel(rays,renderObject);
+            image.ImagePalette = GetRayIntersactionWithModel(rays,objectMesh);
             return image;
         }
         
@@ -52,7 +54,7 @@ namespace ImageConverter.Rendering
             return screenRays;
         }
 
-        private ImagePalette GetRayIntersactionWithModel(IRay[,] rays , List<Triangle> renderObject)
+        private ImagePalette GetRayIntersactionWithModel(IRay[,] rays , Mesh objectMesh)
         {
             ImagePalette imagePalette = new ImagePalette();
             for (int i = rays.GetLength(0) - 1; i >= 0; i--)
@@ -60,7 +62,7 @@ namespace ImageConverter.Rendering
                 for (int j = rays.GetLength(1) - 1; j >= 0 ; j--)
                 {
                     bool isFilled = false;
-                    foreach (Triangle tr in renderObject)
+                    foreach (Triangle tr in objectMesh.Faces)
                     {
                         isFilled = RayIntersactionSolver.RayIntersectsTriangle(rays[i, j],tr);
                         if(isFilled) break;

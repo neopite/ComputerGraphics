@@ -4,9 +4,9 @@ namespace ImageConverter.Rendering
 {
     public class Mesh
     {
-        public List<Vector3> Faces { get; private set; }
+        public List<Triangle> Faces { get; set; }
 
-        public Mesh(List<Vector3> faces)
+        public Mesh(List<Triangle> faces)
         {
             Faces = faces;
         }
