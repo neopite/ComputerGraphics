@@ -7,6 +7,9 @@ namespace ImageConverter.Rendering
         public double x;
         public double y;
         public double z;
+
+        public static readonly Vector3 Zero = new Vector3(0, 0, 0);
+        public static readonly Vector3 One = new Vector3(1, 1, 1);
         
         public double Length => (double) Math.Sqrt(x * x + y * y + z * z);
 

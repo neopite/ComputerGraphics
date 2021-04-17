@@ -15,14 +15,14 @@ namespace ImageConverter
     {
         public static void Main(string[] args)
         {
-            IKernel container = SetupContainer("D:\\Study\\CompAssignment\\ComputerGraphics\\Images","D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj");
-            IRenderer rendering = container.Get<IRenderer>();
-            IImageWriter imageWriter = container.Get<IImageWriter>();
-                imageWriter.WriteImage(rendering.RenderObj("D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj"));
+           // IKernel container = SetupContainer("D:\\Study\\CompAssignment\\ComputerGraphics\\Images","D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj");
+            //IRenderer rendering = container.Get<IRenderer>();
+            //IImageWriter imageWriter = container.Get<IImageWriter>();
+            //    imageWriter.WriteImage(rendering.RenderObj("D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj"));
         }
 
 
-        private static IKernel SetupContainer(string outputPath,string inputPath)
+        /*private static IKernel SetupContainer(string outputPath,string inputPath)
         {
             IKernel container = new StandardKernel();
             container.Bind<IImageWriter>().To<BmpWriter>()
@@ -35,6 +35,6 @@ namespace ImageConverter
             container.Bind<ICamera>().To<StaticCamera>().WithConstructorArgument("Origin",container.Get<Vector3>("CameraPos"));
             
             return container;
-        }
+        }*/
     }
 }

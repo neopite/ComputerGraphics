@@ -2,12 +2,12 @@
 
 namespace ImageConverter.Rendering
 {
-    public abstract class ICamera
+    public abstract class ICamera : GameObject
     {
         public Vector3 Origin { get;private set; }
-        
-        [Inject]
-        protected ICamera(Vector3 origin)
+
+
+        protected ICamera(Transform transform,Vector3 origin) : base(transform)
         {
             Origin = origin;
         }

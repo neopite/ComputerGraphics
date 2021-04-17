@@ -4,7 +4,7 @@
     {
         public Vector3 Origin { get;private set; }
 
-        public StaticCamera(Vector3 origin) : base(origin)
+        public StaticCamera(Transform transform, Vector3 origin) : base(transform, origin)
         {
         }
     }
