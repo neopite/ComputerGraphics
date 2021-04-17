@@ -16,12 +16,14 @@ namespace ImageConverter
         public static void Main(string[] args)
         {
            // IKernel container = SetupContainer("D:\\Study\\CompAssignment\\ComputerGraphics\\Images","D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj");
-            //IRenderer rendering = container.Get<IRenderer>();
-            //IImageWriter imageWriter = container.Get<IImageWriter>();
-            //    imageWriter.WriteImage(rendering.RenderObj("D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj"));
+           ICamera camera = new StaticCamera(new Transform(new Vector3(0,0,0),Vector3.Zero,Vector3.One));
+           IRayIntersactionCalculation rayIntersactionCalculation = new MollerTrumbore();
+           IObjectParser objectParser = new Parser();
+           IRenderer rendering = new DefaultRenderer(objectParser,rayIntersactionCalculation,camera);
+           IImageWriter imageWriter = new BmpWriter();
+                imageWriter.WriteImage(rendering.RenderObj("D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj"));
         }
-
-
+        
         /*private static IKernel SetupContainer(string outputPath,string inputPath)
         {
             IKernel container = new StandardKernel();
@@ -32,7 +34,15 @@ namespace ImageConverter
             container.Bind<IRayIntersactionCalculation>().To<MollerTrumbore>();
             container.Bind<Vector3>().To<Vector3>().Named("CameraPos").WithConstructorArgument("x", 0.0)
                 .WithConstructorArgument("y",0.0).WithConstructorArgument("z", 0.0);
-            container.Bind<ICamera>().To<StaticCamera>().WithConstructorArgument("Origin",container.Get<Vector3>("CameraPos"));
+            container.Bind<Vector3>().To<Vector3>().Named("CameraRot").WithConstructorArgument("x", 0.0)
+                .WithConstructorArgument("y",0.0).WithConstructorArgument("z", 0.0);
+            container.Bind<Vector3>().To<Vector3>().Named("CameraScale").WithConstructorArgument("x", 0.0)
+                .WithConstructorArgument("y",0.0).WithConstructorArgument("z", 0.0);
+            container.Bind<Transform>().To<Transform>().Named("CameraTransform")
+                .WithConstructorArgument("position", container.Get<Vector3>("CameraPos"))
+                .WithConstructorArgument("rotation", container.Get<Vector3>("CameraRot"))
+                .WithConstructorArgument("scale", container.Get<Vector3>("CameraScale"));
+            container.Bind<ICamera>().To<StaticCamera>().WithConstructorArgument("transform",container.Get<Transform>("CameraTransform"));
             
             return container;
         }*/

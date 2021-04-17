@@ -5,18 +5,8 @@ namespace ImageConverter.Rendering
 {
     public class Transform
     {
-        public Vector3 Position
-        {
-            get
-            {
-                return Position;
-            }
-            set
-            {
-                Matrix4X4.applyTranslation(value);
-                Position = value;
-            }
-        }
+        public Vector3 Position { get; set; }    // Matrix4X4.applyTranslation(value);
+
 
         public Vector3 Rotation { get;set; }
         public Vector3 Scale { get; set; }
