@@ -16,11 +16,11 @@ namespace ImageConverter
         public static void Main(string[] args)
         {
            // IKernel container = SetupContainer("D:\\Study\\CompAssignment\\ComputerGraphics\\Images","D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj");
-           ICamera camera = new StaticCamera(new Transform(new Vector3(0,0,0),Vector3.Zero,Vector3.One));
+           ICamera camera = new StaticCamera(new Transform(new Vector3(0,0,-2),Vector3.Zero,Vector3.One));
            IRayIntersactionCalculation rayIntersactionCalculation = new MollerTrumbore();
            IObjectParser objectParser = new Parser();
            IRenderer rendering = new DefaultRenderer(objectParser,rayIntersactionCalculation,camera);
-           IImageWriter imageWriter = new BmpWriter();
+           IImageWriter imageWriter = new BmpWriter("D:\\Study\\CompAssignment\\ComputerGraphics\\Images");
                 imageWriter.WriteImage(rendering.RenderObj("D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj"));
         }
         
