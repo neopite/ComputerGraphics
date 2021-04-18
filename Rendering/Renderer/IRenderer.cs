@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using ImageConverter.ImageStructure;
+using ImageConverter.Rendering.Calculation;
 using ImageConverter.Rendering.Renderer.Calculations;
 using Ninject;
 
@@ -28,14 +29,18 @@ namespace ImageConverter.Rendering.Renderer
             return  _objectParser.ParseObject(inputPath);
         }
         
-        public List<Vector3> GetScreenPointsForRay(double screenSize , Image goalImage)
+        public List<Vector3> GetScreenPointsForRay(double screenSize , Image goalImage, ICamera camera, Vector3 screencenter)
         {
             List<Vector3> listPointsForRay = new List<Vector3>();
             
             int imageHeight = goalImage.Height;
             int imageWidth = goalImage.Width;
+
+            Vector3 translation = screencenter - camera.Origin;
+            Vector3 scale = new Vector3(1, 1, 1);
+            Vector3 rotation = new Vector3(0, 0, 0);
             
-            double pZ = -1; 
+            double pZ = 0; 
             
             for (int y = 0; y < imageHeight; y++)       
             {
@@ -43,8 +48,12 @@ namespace ImageConverter.Rendering.Renderer
                 {
                     double pX = (2 * (x + 0.5) / imageWidth) - 1;
                     double pY = 1 - 2 * ((y + 0.5) / imageHeight);
-                    Vector3 rayInWorldSpace = new Vector3(pX, pY, pZ);
-                    listPointsForRay.Add(rayInWorldSpace);
+                    Vector3 pointCoordinatesInPlainSpace = new Vector3(pX, pY, pZ);
+                    
+                    
+                    Vector3 pointCoordinatesInWorldSpace = new Matrix4x4().TransformToWorldCoordinates
+                        (pointCoordinatesInPlainSpace, translation, rotation , scale);
+                    listPointsForRay.Add(pointCoordinatesInWorldSpace);
                 }
             }
             return listPointsForRay;

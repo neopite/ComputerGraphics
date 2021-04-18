@@ -12,7 +12,7 @@ namespace ImageConverter.Rendering
         //Assume that screen is square 
         public static double GetActualScreenSize(double distanceFromCamToScreen , double fov)
         {
-            double rad = MathCalculations.DegreeToRad(fov);
+            double rad = DegreeToRad(fov);
             double size = 2 * distanceFromCamToScreen * Math.Tan(rad/2);
             return size;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace ImageConverter.Rendering.Calculation
 {
@@ -13,6 +14,13 @@ namespace ImageConverter.Rendering.Calculation
     }
   }
 
+  public Vector3 TransformToWorldCoordinates(Vector3 pointCoordinatesInPlainSpace, Vector3 translation, Vector3 rotation, Vector3 scale)
+  {
+      generateTransformation(translation, rotation, scale);
+      return applyPoint(pointCoordinatesInPlainSpace);
+
+  }
+  
   public void generateTransformation(Vector3 translation, Vector3 rotation, Vector3 scale) {
     applyTranslation(translation);
     applyRotation(rotation);

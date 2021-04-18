@@ -25,16 +25,16 @@ namespace ImageConverter.Rendering
         public override Image RenderObj(string inputPath)
         {
             #region CameraSettings
-            Vector3 centerScreen = Camera.Origin + new Vector3(0,0,1);
+            Vector3 centerScreen = new Vector3(1,0,0);
             Vector3 camLookDirection = (centerScreen - Camera.Origin).Normalize();
             Image image = new Image(1000,1000);
             #endregion
-            _actualScreenSize = MathCalculations.GetActualScreenSize((Camera.Origin - centerScreen).Length,90);
+            _actualScreenSize = MathCalculations.GetActualScreenSize((centerScreen - Camera.Origin).Length,90);
 
             Mesh objectMesh = new Mesh(GetModel(inputPath));
             GameObject gameObject = new GameObject();
             gameObject.MeshRenderer = objectMesh;
-            List<Vector3> arrayOfPixelsCenters = GetScreenPointsForRay(_actualScreenSize,image);
+            List<Vector3> arrayOfPixelsCenters = GetScreenPointsForRay(_actualScreenSize,image, Camera, centerScreen);
             IRay[,] rays = GetRays(Camera,arrayOfPixelsCenters,image);
             image.ImagePalette = GetRayIntersactionWithModel(rays,objectMesh);
             return image;
