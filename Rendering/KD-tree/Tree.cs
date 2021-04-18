@@ -5,7 +5,7 @@ namespace ImageConverter.Rendering
     public class Tree
     {
         public Box root;
-        public const int MaxTrianglesAmountInLeaf = 100;
+        public const int MaxTrianglesAmountInLeaf = 20;
         public static string[] axes = {"x", "y", "z"};
         public static int s = 0;
 
@@ -44,7 +44,7 @@ namespace ImageConverter.Rendering
                     {
                         return AppropriateBoxForRay(ray, root.leftSubBox);
                     }
-                    else
+                    if (RayBoxIntersection.RayIntersectsBox(ray, root.rightSubBox))
                     {
                         return AppropriateBoxForRay(ray, root.rightSubBox);
                     }
@@ -54,7 +54,7 @@ namespace ImageConverter.Rendering
                     return null;
                 }
             }
-            
+            return null;
         }
     }
 }

@@ -51,6 +51,7 @@ namespace ImageConverter.Rendering
                             }
                         }
                     }
+                    
                     /*foreach (Triangle tr in renderObject)
                     {
                         isFilled = MollerTrumbore.RayIntersectsTriangle(cameraPosition, rays[i, j], tr);
