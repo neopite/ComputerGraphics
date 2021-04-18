@@ -7,15 +7,18 @@ namespace ImageConverter.Rendering
 {
     public class Parser : IObjectParser
     {
-        public List<Triangle> ParseObject(string inputPath)
+        public Mesh ParseObject(string inputPath)
         {
             var objLoaderFactory = new ObjLoaderFactory();
             var objLoader = objLoaderFactory.Create();
             var fileStream = new FileStream(inputPath,FileMode.Open);
             var result = objLoader.Load(fileStream);
             List<Triangle> faces = new List<Triangle>();
+            List<Vector3> normals = new List<Vector3>();
             for (int i = 0; i < result.Groups.Count; i++)
             {
+                Vector3 normal = new Vector3(result.Normals[i].X, result.Normals[i].Y, result.Normals[i].Z);
+                normals.Add(normal);
                 for (int j = 0; j < result.Groups[i].Faces.Count; j++)
                 {
                     Vector3 a = new Vector3(result.Vertices[result.Groups[i].Faces[j][0].VertexIndex - 1].X,
@@ -34,7 +37,7 @@ namespace ImageConverter.Rendering
                 }
             }
 
-            return faces;
+            return new Mesh(faces, normals);
         }
     }
 }

@@ -6,6 +6,6 @@ namespace ImageConverter.Rendering.Renderer.Calculations
 {
     public interface IRayIntersactionCalculation
     {
-        public  Boolean RayIntersectsTriangle(IRay ray, Triangle inTriangle);
+        public  TriagleIntersectionModel RayIntersectsTriangle(IRay ray, Triangle inTriangle);
     }
 }

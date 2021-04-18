@@ -24,7 +24,7 @@ namespace ImageConverter.Rendering.Renderer
         
         public  abstract Image RenderObj(string inputPath);
 
-        public List<Triangle> GetModel(string inputPath)
+        public Mesh InitModel(string inputPath)
         {
             return  _objectParser.ParseObject(inputPath);
         }

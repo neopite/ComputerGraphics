@@ -35,6 +35,11 @@ namespace ImageConverter.Rendering
         {
             return new Vector3(left.x - right.x, left.y - right.y, left.z - right.z);
         }
+        
+        public static Vector3 operator *(Vector3 vector1 , double value) {
+            return new Vector3(value * vector1.x , value * vector1.y , value * vector1.z);
+        }
+        
         public Vector3 CrossProduct(Vector3 edge2)
         {
             var u = this;
