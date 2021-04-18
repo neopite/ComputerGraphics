@@ -5,6 +5,6 @@ namespace ImageConverter.Rendering
 {
     public interface IObjectParser
     {
-        List<Triangle> ParseObject(string inputPath);
+        Mesh ParseObject(string inputPath);
     }
 }
