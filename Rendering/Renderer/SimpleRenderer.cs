@@ -25,7 +25,7 @@ namespace ImageConverter.Rendering
         public override Image RenderObj(string inputPath)
         {
             #region CameraSettings
-            Vector3 centerScreen = new Vector3(1,0,0);
+            Vector3 centerScreen = new Vector3(0,1,0);
             Vector3 camLookDirection = (centerScreen - Camera.Origin).Normalize();
             Image image = new Image(1000,1000);
             #endregion
