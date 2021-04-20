@@ -40,9 +40,9 @@ namespace ImageConverter.Rendering.Calculation
   }
 
   public static void applyTranslation(Vector3 translation) {
-    m[0,3] += translation.x;
-    m[1,3] += translation.y;
-    m[2,3] += translation.z;
+    m[0,3] = translation.x;
+    m[1,3] = translation.y;
+    m[2,3] = translation.z;
   }
 
   public static void applyScale(Vector3 scale)
@@ -77,8 +77,8 @@ namespace ImageConverter.Rendering.Calculation
     rotation[0,0] = 1;
     double radians = MathCalculations.DegreeToRad(angle);
     rotation[1,1] = Math.Cos(radians);
-    rotation[1,2] = Math.Sin(radians);
-    rotation[2,1] = -Math.Sin(radians);
+    rotation[1,2] = -Math.Sin(radians);
+    rotation[2,1] = Math.Sin(radians);
     rotation[2,2] = Math.Cos(radians);
     return rotation;
   }
@@ -89,8 +89,8 @@ namespace ImageConverter.Rendering.Calculation
     rotation[1,1] = 1;
     double radians = MathCalculations.DegreeToRad(angle);
     rotation[0,0] = Math.Cos(radians);
-    rotation[0,2] = -Math.Sin(radians);
-    rotation[2,0] = Math.Sin(radians);
+    rotation[0,2] = Math.Sin(radians);
+    rotation[2,0] = -Math.Sin(radians);
     rotation[2,2] = Math.Cos(radians);
     return rotation;
   }

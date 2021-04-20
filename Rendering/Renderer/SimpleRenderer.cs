@@ -57,15 +57,22 @@ namespace ImageConverter.Rendering
         private ImagePalette GetRayIntersactionWithModel(IRay[,] rays , Mesh objectMesh)
         {
             ImagePalette imagePalette = new ImagePalette();
+            Tree tree = new Tree(objectMesh);
             for (int i = rays.GetLength(0) - 1; i >= 0; i--)
             {
                 for (int j = rays.GetLength(1) - 1; j >= 0 ; j--)
                 {
                     bool isFilled = false;
-                    foreach (Triangle tr in objectMesh.Faces)
+                    Box box = tree.AppropriateBoxForRay(rays[i, j].Direction, tree.root);
+                    if (box != null)
                     {
-                        isFilled = RayIntersactionSolver.RayIntersectsTriangle(rays[i, j],tr)!=null?true:false;
-                        if(isFilled) break;
+                        foreach (Triangle tr in box.triangles)
+                        {
+                            isFilled = RayIntersactionSolver.RayIntersectsTriangle(rays[i, j], tr) != null
+                                ? true
+                                : false;
+                            if (isFilled) break;
+                        }
                     }
                     if (isFilled) imagePalette.ListOfPixels.Add(new Pixel(i, j, _redPixel));
                     else imagePalette.ListOfPixels.Add(new Pixel(i, j, _blackPixel));
