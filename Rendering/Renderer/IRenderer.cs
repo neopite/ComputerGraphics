@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using ImageConverter.ImageStructure;
 using ImageConverter.Rendering.Calculation;
+using ImageConverter.Rendering.Lights;
+using ImageConverter.Rendering.Rays;
 using ImageConverter.Rendering.Renderer.Calculations;
 using Ninject;
 
@@ -13,16 +15,16 @@ namespace ImageConverter.Rendering.Renderer
         private IObjectParser _objectParser;
         public IRayIntersactionCalculation RayIntersactionSolver { get; private set; }
         public ICamera Camera { get; private set; }
+        public ColorIntensativeCalculation ColorIntensativeCalculation { get; private set; }
 
-
-        [Inject]
-        protected IRenderer(IObjectParser objectParser, IRayIntersactionCalculation rayIntersactionSolver , ICamera camera)
+        protected IRenderer(IObjectParser objectParser, IRayIntersactionCalculation rayIntersactionSolver, ICamera camera, ColorIntensativeCalculation colorIntensativeCalculation)
         {
             _objectParser = objectParser;
             RayIntersactionSolver = rayIntersactionSolver;
             Camera = camera;
+            ColorIntensativeCalculation = colorIntensativeCalculation;
         }
-        
+
         public  abstract Image RenderObj(string inputPath);
 
         public Mesh InitModel(string inputPath)
@@ -43,6 +45,7 @@ namespace ImageConverter.Rendering.Renderer
             Vector3 plainScreenCenter = new Vector3(screenSize / 2, screenSize / 2, 0);
             
 
+
             Vector3 translation = worldScreenCenter;
             Vector3 scale = new Vector3(1, 1, 1);
             Vector3 rotation = new Vector3(270, 0, 0);
@@ -61,15 +64,9 @@ namespace ImageConverter.Rendering.Renderer
                 for (int j = 0; j < imageWidth; j++)
                 {
                     pX = plainScreenCenter.x - screenSize / 2 + pixWidth * (j + 0.5);
-                    
                     Vector3 pointCoordinatesInPlainSpace = new Vector3(pX, pY, pZ) - plainScreenCenter;
-                    
                     temp.Add(pointCoordinatesInPlainSpace);
-
                     Vector3 pointCoordinatesInWorldSpace = Matrix4x4.TransformToWorldCoordinates(tranformationMatrix, pointCoordinatesInPlainSpace);
-                    
-                    
-                    
                     listPointsForRay.Add(pointCoordinatesInWorldSpace);
                 }
             }

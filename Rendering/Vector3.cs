@@ -40,6 +40,12 @@ namespace ImageConverter.Rendering
             return new Vector3(value * vector1.x , value * vector1.y , value * vector1.z);
         }
         
+        public static double operator *(Vector3 vector1 , Vector3 value) {
+            return value.x * vector1.x + value.y * vector1.y + value.z * vector1.z;
+        }
+
+        
+        
         public Vector3 CrossProduct(Vector3 edge2)
         {
             var u = this;

@@ -1,4 +1,6 @@
-﻿namespace ImageConverter.ImageStructure
+﻿using System;
+
+namespace ImageConverter.ImageStructure
 {
     public class Color
     {
@@ -12,5 +14,11 @@
             G = g;
             B = b;
         }
+
+        public static Color operator *(Color color,double intensative)
+        {
+            return new Color((byte)(color.R * intensative), (byte) (color.G * intensative), (byte) (color.B * intensative));
+        }
+        
     }
 }

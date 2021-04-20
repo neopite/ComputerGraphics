@@ -4,21 +4,24 @@ using System.IO;
 using System.Linq;
 using Aspose.ThreeD.Entities;
 using ImageConverter.ImageStructure;
+using ImageConverter.Rendering.Lights;
 using ImageConverter.Rendering.Rays;
 using ImageConverter.Rendering.Rays.Implementation;
 using ImageConverter.Rendering.Renderer;
 using ImageConverter.Rendering.Renderer.Calculations;
 using ObjLoader.Loader.Loaders;
+using Light = ImageConverter.Rendering.Lights.Light;
 
 namespace ImageConverter.Rendering
 {
     public class DefaultRenderer : IRenderer
     {
-        private static readonly Color _blackPixel = new Color(0, 0, 0);
+        private static readonly Color _backgroundColor = new Color(0, 0, 0);
         private static readonly Color _redPixel = new Color(255, 0, 0);
         private double _actualScreenSize; //Square screen
 
-        public DefaultRenderer(IObjectParser objectParser, IRayIntersactionCalculation rayIntersactionSolver, ICamera camera) : base(objectParser, rayIntersactionSolver, camera)
+
+        public DefaultRenderer(IObjectParser objectParser, IRayIntersactionCalculation rayIntersactionSolver, ICamera camera, ColorIntensativeCalculation colorIntensativeCalculation) : base(objectParser, rayIntersactionSolver, camera, colorIntensativeCalculation)
         {
         }
 
@@ -30,7 +33,6 @@ namespace ImageConverter.Rendering
             Image image = new Image(1000,1000);
             #endregion
             _actualScreenSize = MathCalculations.GetActualScreenSize((centerScreen - Camera.Origin).Length,90);
-
             Mesh objectMesh = InitModel(inputPath);
             GameObject gameObject = new GameObject();
             gameObject.MeshRenderer = objectMesh;
@@ -63,19 +65,25 @@ namespace ImageConverter.Rendering
                 for (int j = rays.GetLength(1) - 1; j >= 0 ; j--)
                 {
                     bool isFilled = false;
+                    Color color = _backgroundColor;
                     Box box = tree.AppropriateBoxForRay(rays[i, j], tree.root);
                     if (box != null)
                     {
-                        foreach (Triangle tr in box.triangles)
+                        for (int triangle = 0; triangle < box.triangles.Count; triangle++)
                         {
-                            isFilled = RayIntersactionSolver.RayIntersectsTriangle(rays[i, j], tr) != null
-                                ? true
-                                : false;
+                            TriagleIntersectionModel intersection = RayIntersactionSolver.RayIntersectsTriangle(rays[i, j], box.triangles[triangle]);
+                            if (intersection != null)
+                            {
+                                double intensative =
+                                    ColorIntensativeCalculation.FindColorIntensativeForTrinagle(intersection.Triangle);
+                                color = (_redPixel * intensative);
+                            }
+                            isFilled = intersection!=null?true:false;
                             if (isFilled) break;
                         }
                     }
-                    if (isFilled) imagePalette.ListOfPixels.Add(new Pixel(i, j, _redPixel));
-                    else imagePalette.ListOfPixels.Add(new Pixel(i, j, _blackPixel));
+                    if (isFilled) imagePalette.ListOfPixels.Add(new Pixel(i, j, color));
+                    else imagePalette.ListOfPixels.Add(new Pixel(i, j, _backgroundColor));
                     isFilled = false;
                 }
             }
@@ -83,3 +91,19 @@ namespace ImageConverter.Rendering
         }
     }
 }
+
+
+
+/*for (int triangle = 0; triangle < objectMesh.Faces.Count; triangle++)
+{
+    TriagleIntersectionModel intersection = RayIntersactionSolver.RayIntersectsTriangle(rays[i, j], objectMesh.Faces[triangle]);
+    double intensative = colorIntensativeCalculation.FindColorIntensativeForTrinagle(objectMesh.Faces[triangle],objectMesh.Normals[triangle],intersection.IntersactionPoint);
+    if (intensative > 0)
+    {
+        color = (_redPixel * intensative);
+    } else
+    {
+        color = _backgroundColor;
+    }
+                        
+    isFilled = intersection!=null?true:false;*/

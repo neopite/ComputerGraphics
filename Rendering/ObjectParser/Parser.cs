@@ -18,7 +18,7 @@ namespace ImageConverter.Rendering
             for (int i = 0; i < result.Groups.Count; i++)
             {
                 // Vector3 normal = new Vector3(result.Normals[i].X, result.Normals[i].Y, result.Normals[i].Z);
-                // normals.Add(normal);
+               //  normals.Add(normal);
                 for (int j = 0; j < result.Groups[i].Faces.Count; j++)
                 {
                     Vector3 a = new Vector3(result.Vertices[result.Groups[i].Faces[j][0].VertexIndex - 1].X,
