@@ -61,32 +61,36 @@ namespace ImageConverter.Rendering
             switch (axis)
             {
                 case "x":
-                    avgValuesArray = triangles.Select(triangle => (triangle.a.x + triangle.b.x + triangle.c.x) / 3).ToList();
-                    avgValuesArray.Sort();
-                    if (avgValuesArray.Count % 2 == 0)
-                    {
-                        median = (avgValuesArray[avgValuesArray.Count / 2 - 1] + avgValuesArray[avgValuesArray.Count / 2]) / 2;
-                    }
-                    else
-                    {
-                        median = avgValuesArray[(avgValuesArray.Count - 1) / 2];
-                    }
-                    leftSubBox = new Box(triangles, minX, median, minY, maxY, minZ, maxZ);
-                    rightSubBox = new Box(triangles, median, maxX, minY, maxY, minZ, maxZ);
+                    // avgValuesArray = triangles.Select(triangle => (triangle.a.x + triangle.b.x + triangle.c.x) / 3).ToList();
+                    // avgValuesArray.Sort();
+                    // if (avgValuesArray.Count % 2 == 0)
+                    // {
+                    //     median = (avgValuesArray[avgValuesArray.Count / 2 - 1] + avgValuesArray[avgValuesArray.Count / 2]) / 2;
+                    // }
+                    // else
+                    // {
+                    //     median = avgValuesArray[(avgValuesArray.Count - 1) / 2];
+                    // }
+                    // leftSubBox = new Box(triangles, minX, median, minY, maxY, minZ, maxZ);
+                    // rightSubBox = new Box(triangles, median, maxX, minY, maxY, minZ, maxZ);
+                    leftSubBox = new Box(triangles, minX, (minX + maxX) / 2, minY, maxY, minZ, maxZ);
+                    rightSubBox = new Box(triangles, (minX + maxX) / 2, maxX, minY, maxY, minZ, maxZ);
                     break;
                 case "y":
-                    avgValuesArray = triangles.Select(triangle => (triangle.a.y + triangle.b.y + triangle.c.y) / 3).ToList();
-                    avgValuesArray.Sort();
-                    if (avgValuesArray.Count % 2 == 0)
-                    {
-                        median = (avgValuesArray[avgValuesArray.Count / 2 - 1] + avgValuesArray[avgValuesArray.Count / 2]) / 2;
-                    }
-                    else
-                    {
-                        median = avgValuesArray[(avgValuesArray.Count - 1) / 2];
-                    }
-                    leftSubBox = new Box(triangles, minX, maxX, minY, median, minZ, maxZ);
-                    rightSubBox = new Box(triangles, minX, maxX, median, maxY, minZ, maxZ);
+                    // avgValuesArray = triangles.Select(triangle => (triangle.a.y + triangle.b.y + triangle.c.y) / 3).ToList();
+                    // avgValuesArray.Sort();
+                    // if (avgValuesArray.Count % 2 == 0)
+                    // {
+                    //     median = (avgValuesArray[avgValuesArray.Count / 2 - 1] + avgValuesArray[avgValuesArray.Count / 2]) / 2;
+                    // }
+                    // else
+                    // {
+                    //     median = avgValuesArray[(avgValuesArray.Count - 1) / 2];
+                    // }
+                    // leftSubBox = new Box(triangles, minX, maxX, minY, median, minZ, maxZ);
+                    // rightSubBox = new Box(triangles, minX, maxX, median, maxY, minZ, maxZ);
+                    leftSubBox = new Box(triangles, minX, maxX, minY, (minY + maxY) / 2, minZ, maxZ);
+                    rightSubBox = new Box(triangles, minX, maxX, (minY + maxY) / 2, maxY, minZ, maxZ);
                     break;
                 case "z":
                     avgValuesArray = triangles.Select(triangle => (triangle.a.z + triangle.b.z + triangle.c.z) / 3).ToList();
@@ -99,8 +103,10 @@ namespace ImageConverter.Rendering
                     {
                         median = avgValuesArray[(avgValuesArray.Count - 1) / 2];
                     }
-                    leftSubBox = new Box(triangles, minX, maxX, minY, maxY, minZ, median);
-                    rightSubBox = new Box(triangles, maxX / 2, maxX, minY, maxY, median, maxZ);
+                    // leftSubBox = new Box(triangles, minX, maxX, minY, maxY, minZ, median);
+                    // rightSubBox = new Box(triangles, maxX / 2, maxX, minY, maxY, median, maxZ);
+                    leftSubBox = new Box(triangles, minX, maxX, minY, maxY, minZ, (minZ + maxZ) / 2);
+                    rightSubBox = new Box(triangles, maxX / 2, maxX, minY, maxY, (minZ + maxZ) / 2, maxZ);
                     break;
             }
         }

@@ -48,7 +48,7 @@ namespace ImageConverter.Rendering
                 for (int j = 0; j < screenRays.GetLength(1); j++)
                 {
                     screenRays[i, j] = new Ray(camera.Origin,
-                        (listOfCentersOnScreen[(i * screenRays.GetLength(1)) + j] - camera.Origin));
+                        listOfCentersOnScreen[i * screenRays.GetLength(1) + j] - camera.Origin);
                 }
             }
             return screenRays;
@@ -63,7 +63,7 @@ namespace ImageConverter.Rendering
                 for (int j = rays.GetLength(1) - 1; j >= 0 ; j--)
                 {
                     bool isFilled = false;
-                    Box box = tree.AppropriateBoxForRay(rays[i, j].Direction, tree.root);
+                    Box box = tree.AppropriateBoxForRay(rays[i, j], tree.root);
                     if (box != null)
                     {
                         foreach (Triangle tr in box.triangles)

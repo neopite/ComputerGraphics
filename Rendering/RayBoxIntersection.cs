@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Numerics;
+using ImageConverter.Rendering.Rays;
+using ImageConverter.Rendering.Rays.Implementation;
 
 namespace ImageConverter.Rendering
 {
     public class RayBoxIntersection
     {
-        public static Boolean RayIntersectsBox(Vector3 ray, Box box)
+        public static Boolean RayIntersectsBox(IRay ray, Box box)
         {
-            Vector3 inv_dir = new Vector3(1 / ray.x, 1 / ray.y, 1 / ray.z);
-            Vector3 ray_pos = new Vector3(0, 0, -2);
+            double x = 1 / ray.Direction.x;
+            double y = 1 / ray.Direction.y;
+            double z = 1 / ray.Direction.z;
+            
+            Vector3 inv_dir = new Vector3(x, y, z);
+            Vector3 ray_pos = ray.Origin;
             
             double lo = inv_dir.x * (box.minX - ray_pos.x);
             double hi = inv_dir.x * (box.maxX - ray_pos.x);
