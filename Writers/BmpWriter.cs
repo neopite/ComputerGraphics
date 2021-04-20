@@ -44,11 +44,11 @@ namespace ImageConverter.Writers
             for (int i = image.Height - 1; i >= 0; i--)
             {
                 var rowOfPixels = image.ImagePalette.ListOfPixels.GetRange(i * image.Width, image.Width);
-                foreach (var pixel in rowOfPixels)
+                for (int itter = rowOfPixels.Count -1 ; itter >= 0 ; itter--)
                 {
-                    writer.Write(pixel.Color.B);
-                    writer.Write(pixel.Color.G);
-                    writer.Write(pixel.Color.R);
+                    writer.Write(rowOfPixels[itter].Color.B);
+                    writer.Write(rowOfPixels[itter].Color.G);
+                    writer.Write(rowOfPixels[itter].Color.R);   
                 }
             }
             writer.Write(new byte[]{0, 0});
