@@ -2,6 +2,8 @@
 using System.Runtime.InteropServices;
 using ImageConverter.ImageStructure;
 using ImageConverter.Rendering.Calculation;
+using ImageConverter.Rendering.Lights;
+using ImageConverter.Rendering.Rays;
 using ImageConverter.Rendering.Renderer.Calculations;
 using Ninject;
 
@@ -12,14 +14,16 @@ namespace ImageConverter.Rendering.Renderer
         private IObjectParser _objectParser;
         public IRayIntersactionCalculation RayIntersactionSolver { get; private set; }
         public ICamera Camera { get; private set; }
+        public ColorIntensativeCalculation ColorIntensativeCalculation { get; private set; }
 
 
         [Inject]
-        protected IRenderer(IObjectParser objectParser, IRayIntersactionCalculation rayIntersactionSolver , ICamera camera)
+        protected IRenderer(IObjectParser objectParser, IRayIntersactionCalculation rayIntersactionSolver , ICamera camera , ColorIntensativeCalculation calculation)
         {
             _objectParser = objectParser;
             RayIntersactionSolver = rayIntersactionSolver;
             Camera = camera;
+            ColorIntensativeCalculation = calculation;
         }
         
         public  abstract Image RenderObj(string inputPath);
@@ -40,7 +44,7 @@ namespace ImageConverter.Rendering.Renderer
             Vector3 scale = new Vector3(1, 1, 1);
             Vector3 rotation = new Vector3(0, 0, 0);
             
-            double pZ = 0; 
+            double pZ = -1; 
             
             for (int y = 0; y < imageHeight; y++)       
             {
@@ -49,11 +53,7 @@ namespace ImageConverter.Rendering.Renderer
                     double pX = (2 * (x + 0.5) / imageWidth) - 1;
                     double pY = 1 - 2 * ((y + 0.5) / imageHeight);
                     Vector3 pointCoordinatesInPlainSpace = new Vector3(pX, pY, pZ);
-                    
-                    
-                    Vector3 pointCoordinatesInWorldSpace = new Matrix4x4().TransformToWorldCoordinates
-                        (pointCoordinatesInPlainSpace, translation, rotation , scale);
-                    listPointsForRay.Add(pointCoordinatesInWorldSpace);
+                    listPointsForRay.Add(pointCoordinatesInPlainSpace);
                 }
             }
             return listPointsForRay;
