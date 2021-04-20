@@ -15,13 +15,17 @@ namespace ImageConverter
     {
         public static void Main(string[] args)
         {
-           // IKernel container = SetupContainer("D:\\Study\\CompAssignment\\ComputerGraphics\\Images","D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj");
-           ICamera camera = new StaticCamera(new Transform(new Vector3(0,0,-2),Vector3.Zero,Vector3.One));
-           IRayIntersactionCalculation rayIntersactionCalculation = new MollerTrumbore();
-           IObjectParser objectParser = new Parser();
-           IRenderer rendering = new DefaultRenderer(objectParser,rayIntersactionCalculation,camera);
-           IImageWriter imageWriter = new BmpWriter("D:\\Study\\CompAssignment\\ComputerGraphics\\Images");
-                imageWriter.WriteImage(rendering.RenderObj("D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj"));
+            Console.WriteLine(args.Length);
+            string source = args[0].Substring(9);
+            string format = args[1].Substring(14);
+            string output = args.Length > 2 ? args[2].Substring(9) : source.Split('.')[0];
+            
+            if (Enum.GetNames(typeof(ImageWriteFormat)).ToList().Contains(format.ToUpper()))
+            {
+                ImageConverter image = new ImageConverter(source, format, output);
+                image.ConvertImage();
+            }
+            else throw new OutputFormatNotExistedException(format);
         }
         
         /*private static IKernel SetupContainer(string outputPath,string inputPath)
