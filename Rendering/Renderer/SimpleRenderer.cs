@@ -54,10 +54,10 @@ namespace ImageConverter.Rendering
                 for (int j = rays.GetLength(1) - 1; j >= 0 ; j--)
                 {
                     Color color = Color.Black;
-                    Box box = tree.AppropriateBoxForRay(rays[i, j], tree.root);
-                    if (box != null)
+                    Node node = tree.AppropriateBoxForRay(rays[i, j], tree.root);
+                    if (node != null)
                     {
-                         color = colorIntensativeCalculation.GetObjectColor(box, rays[i, j], rayIntersactionSolver);
+                         color = colorIntensativeCalculation.GetObjectColor(node, rays[i, j], rayIntersactionSolver);
                     }
                     imagePalette.ListOfPixels.Add(new Pixel(i, j, color));
                 }

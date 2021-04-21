@@ -6,35 +6,30 @@ namespace ImageConverter.Rendering
 {
     public class Tree
     {
-        public Box root;
+        public Node root;
         public const int MaxDepth = 1;
         public static string[] axes = {"x", "y", "z"};
         public static int s = 0;
 
         public Tree(Mesh mesh)
         { 
-            root = new Box(mesh.Faces);
+            root = new Node(mesh.Faces);
             ConstructTree(root);
         }
 
-        public void ConstructTree(Box root, int depth = 0)
+        public void ConstructTree(Node root, int depth = 0)
         {
-            Tree.s += root.triangles.Count;
             if (depth < MaxDepth)
             {
                 root.DivideBox(axes[depth % 3]);
-                ConstructTree(root.leftSubBox, depth + 1);
-                ConstructTree(root.rightSubBox, depth + 1);
-            }
-            else
-            {
-                return;
+                ConstructTree(root.leftSubNode, depth + 1);
+                ConstructTree(root.rightSubNode, depth + 1);
             }
         }
 
-        public Box AppropriateBoxForRay(IRay ray, Box root)
+        public Node AppropriateBoxForRay(IRay ray, Node root)
         {
-            if (root.leftSubBox == null && root.rightSubBox == null)
+            if (root.leftSubNode == null && root.rightSubNode == null)
             {
                 return root;
             }
@@ -42,13 +37,13 @@ namespace ImageConverter.Rendering
             {
                 if (RayBoxIntersection.RayIntersectsBox(ray, root))
                 {
-                    if (RayBoxIntersection.RayIntersectsBox(ray, root.leftSubBox))
+                    if (RayBoxIntersection.RayIntersectsBox(ray, root.leftSubNode))
                     {
-                        return AppropriateBoxForRay(ray, root.leftSubBox);
+                        return AppropriateBoxForRay(ray, root.leftSubNode);
                     }
-                    if (RayBoxIntersection.RayIntersectsBox(ray, root.rightSubBox))
+                    if (RayBoxIntersection.RayIntersectsBox(ray, root.rightSubNode))
                     {
-                        return AppropriateBoxForRay(ray, root.rightSubBox);
+                        return AppropriateBoxForRay(ray, root.rightSubNode);
                     }
                 }
                 else

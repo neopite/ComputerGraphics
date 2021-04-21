@@ -16,11 +16,11 @@ namespace ImageConverter.Rendering.Rays
             Light = light;
         }
 
-        public Color GetObjectColor(Box box ,IRay ray ,IRayIntersactionCalculation rayIntersactionSolver)
+        public Color GetObjectColor(Node node ,IRay ray ,IRayIntersactionCalculation rayIntersactionSolver)
         {
-            for (int triangle = 0; triangle < box.triangles.Count; triangle++)
+            for (int triangle = 0; triangle < node.triangles.Count; triangle++)
             {
-                TriagleIntersectionModel intersection = rayIntersactionSolver.RayIntersectsTriangle(ray, box.triangles[triangle]);
+                TriagleIntersectionModel intersection = rayIntersactionSolver.RayIntersectsTriangle(ray, node.triangles[triangle]);
                 if (intersection != null)
                 {
                     double intensative =
