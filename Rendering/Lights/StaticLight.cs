@@ -2,7 +2,7 @@
 {
     public class StaticLight : ILight
     {
-        public StaticLight(Vector3 origin) : base(origin)
+        public StaticLight() : base()
         {
         }
     }

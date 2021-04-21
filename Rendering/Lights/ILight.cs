@@ -1,12 +1,15 @@
-﻿namespace ImageConverter.Rendering.Lights
+﻿using Ninject;
+
+namespace ImageConverter.Rendering.Lights
 {
     public abstract class ILight
     {
         public Vector3 Origin { get; private set; }
 
-        public ILight(Vector3 origin)
+        [Inject]
+        public ILight()
         {
-            Origin = origin;
+            Origin = new Vector3(0, 5, 0);
         }
     }
 }

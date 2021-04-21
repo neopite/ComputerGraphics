@@ -5,10 +5,7 @@ namespace ImageConverter.Rendering
 {
     public class PerpectiveCamera : Camera 
     {
-        public PerpectiveCamera(Transform transform, Vector3 screenCenter, int width, int height) : base(transform, screenCenter, width, height)
-        {
-        }
-
+        
         public override List<Vector3> GetScreenPoints(double screenSize)
         {
             List<Vector3> listPointsForRay = new List<Vector3>();

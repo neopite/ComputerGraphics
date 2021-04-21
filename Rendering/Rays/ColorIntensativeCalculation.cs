@@ -2,6 +2,7 @@
 using ImageConverter.ImageStructure;
 using ImageConverter.Rendering.Lights;
 using ImageConverter.Rendering.Renderer.Calculations;
+using Ninject;
 
 namespace ImageConverter.Rendering.Rays
 {
@@ -9,6 +10,7 @@ namespace ImageConverter.Rendering.Rays
     {
         public ILight Light { get; private set; }
 
+        [Inject]
         public ColorIntensativeCalculation(ILight light)
         {
             Light = light;

@@ -10,12 +10,13 @@ namespace ImageConverter.Rendering
         public int width;
         public int height;
 
-        protected Camera(Transform transform, Vector3 screenCenter, int width, int height)
+        [Inject]
+        protected Camera()
         {
-            this.transform = transform;
-            this.screenCenter = screenCenter;
-            this.width = width;
-            this.height = height;
+            this.transform = new Transform(new Vector3(0, 2, 0), new Vector3(270, 180, 0), Vector3.One);
+            this.screenCenter = new Vector3(0,1,0);
+            this.width = 400;
+            this.height = 400;
         }
 
         public abstract List<Vector3> GetScreenPoints(double actualScreenSize);

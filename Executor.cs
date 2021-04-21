@@ -3,6 +3,8 @@ using System.Linq;
 using System.Reflection;
 using ImageConverter.Readers;
 using ImageConverter.Rendering;
+using ImageConverter.Rendering.Lights;
+using ImageConverter.Rendering.Rays;
 using ImageConverter.Rendering.Renderer;
 using ImageConverter.Rendering.Renderer.Calculations;
 using ImageConverter.Writers;
@@ -15,37 +17,26 @@ namespace ImageConverter
     {
         public static void Main(string[] args)
         {
-            // IKernel container = SetupContainer("D:\\Study\\CompAssignment\\ComputerGraphics\\Images","D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj");
-           ICamera camera = new StaticCamera(new Transform(new Vector3(0,2,0),Vector3.Zero,Vector3.One));
-           IRayIntersactionCalculation rayIntersactionCalculation = new MollerTrumbore();
-           IObjectParser objectParser = new Parser();
-           IRenderer rendering = new DefaultRenderer(objectParser,rayIntersactionCalculation,camera);
-           IImageWriter imageWriter = new BmpWriter("C:\\Users\\Sergey\\Desktop\\CG\\Images");
-                imageWriter.WriteImage(rendering.RenderObj("C:\\Users\\Sergey\\Desktop\\CG\\Images\\pyramid.obj"));
+            string input = "D:\\Study\\CompAssignment\\ComputerGraphics\\Images\\cow.obj";
+            string output = "D:\\Study\\CompAssignment\\ComputerGraphics\\Images";
+            IKernel container = SetupContainer();
+            IRenderer rendering = container.Get<IRenderer>();
+            ImageWriter imageWriter = container.Get<ImageWriter>();
+                imageWriter.WriteImage(rendering.RenderObj(input),output);
 
         }
         
-        /*private static IKernel SetupContainer(string outputPath,string inputPath)
+        private static IKernel SetupContainer()
         {
             IKernel container = new StandardKernel();
-            container.Bind<IImageWriter>().To<BmpWriter>()
-                .WithConstructorArgument("outputPath", outputPath);
+            container.Bind<ImageWriter>().To<BmpWriter>();
             container.Bind<IObjectParser>().To<Parser>();
-            container.Bind<IRenderer>().To<DefaultRenderer>();
+            container.Bind<ILight>().To<StaticLight>();
             container.Bind<IRayIntersactionCalculation>().To<MollerTrumbore>();
-            container.Bind<Vector3>().To<Vector3>().Named("CameraPos").WithConstructorArgument("x", 0.0)
-                .WithConstructorArgument("y",0.0).WithConstructorArgument("z", 0.0);
-            container.Bind<Vector3>().To<Vector3>().Named("CameraRot").WithConstructorArgument("x", 0.0)
-                .WithConstructorArgument("y",0.0).WithConstructorArgument("z", 0.0);
-            container.Bind<Vector3>().To<Vector3>().Named("CameraScale").WithConstructorArgument("x", 0.0)
-                .WithConstructorArgument("y",0.0).WithConstructorArgument("z", 0.0);
-            container.Bind<Transform>().To<Transform>().Named("CameraTransform")
-                .WithConstructorArgument("position", container.Get<Vector3>("CameraPos"))
-                .WithConstructorArgument("rotation", container.Get<Vector3>("CameraRot"))
-                .WithConstructorArgument("scale", container.Get<Vector3>("CameraScale"));
-            container.Bind<ICamera>().To<StaticCamera>().WithConstructorArgument("transform",container.Get<Transform>("CameraTransform"));
-            
+            container.Bind<ColorIntensativeCalculation>().To<ColorIntensativeCalculation>();
+            container.Bind<Camera>().To<PerpectiveCamera>();
+            container.Bind<IRenderer>().To<DefaultRenderer>();
             return container;
-        }*/
+        }
     }
 }

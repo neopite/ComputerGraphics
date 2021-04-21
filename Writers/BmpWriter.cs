@@ -6,22 +6,16 @@ using Ninject;
 
 namespace ImageConverter.Writers
 {
-    public class BmpWriter : IImageWriter
+    public class BmpWriter : ImageWriter
     {
-        
         [Inject]
-        public BmpWriter(string outputPath) : base(outputPath)
-        {
-            
-        }
-
         public BmpWriter()
         {
         }
 
-        public override void WriteImage(Image image)
+        public override void WriteImage(Image image , string output)
         {
-            BinaryWriter writer = new BinaryWriter(new FileStream(OutputPath + ".bmp", FileMode.Create));
+            BinaryWriter writer = new BinaryWriter(new FileStream(output + ".bmp", FileMode.Create));
             BmpMetaData metaData = new BmpMetaData(image);
 
             writer.Write(BmpMetaData.bitmapSignatureBytes);
