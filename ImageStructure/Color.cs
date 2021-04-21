@@ -15,6 +15,10 @@ namespace ImageConverter.ImageStructure
             B = b;
         }
 
+        public static readonly Color Black = new Color(0, 0, 0);
+        public static readonly Color Red = new Color(255, 0, 0);
+        public static readonly Color Green = new Color(0, 255, 0);
+        
         public static Color operator *(Color color,double intensative)
         {
             return new Color((byte)(color.R * intensative), (byte) (color.G * intensative), (byte) (color.B * intensative));

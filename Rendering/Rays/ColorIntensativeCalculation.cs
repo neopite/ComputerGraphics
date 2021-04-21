@@ -1,5 +1,7 @@
 ﻿using System;
+using ImageConverter.ImageStructure;
 using ImageConverter.Rendering.Lights;
+using ImageConverter.Rendering.Renderer.Calculations;
 
 namespace ImageConverter.Rendering.Rays
 {
@@ -12,7 +14,22 @@ namespace ImageConverter.Rendering.Rays
             Light = light;
         }
 
-        public double FindColorIntensativeForTrinagle(Triangle triangle)
+        public Color GetObjectColor(Box box ,IRay ray ,IRayIntersactionCalculation rayIntersactionSolver)
+        {
+            for (int triangle = 0; triangle < box.triangles.Count; triangle++)
+            {
+                TriagleIntersectionModel intersection = rayIntersactionSolver.RayIntersectsTriangle(ray, box.triangles[triangle]);
+                if (intersection != null)
+                {
+                    double intensative =
+                        FindColorIntensativeForTrinagle(intersection.Triangle);
+                    return Color.Red * intensative;
+                }
+            }
+            return Color.Black;
+        }
+
+        private double FindColorIntensativeForTrinagle(Triangle triangle)
         {
             Vector3 triangleCenterPoint = GetSurfaceCenter(triangle);
             Vector3 lightDirection = Light.Origin - triangleCenterPoint;

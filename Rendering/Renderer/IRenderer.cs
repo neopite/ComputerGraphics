@@ -6,72 +6,37 @@ using ImageConverter.Rendering.Calculation;
 using ImageConverter.Rendering.Lights;
 using ImageConverter.Rendering.Rays;
 using ImageConverter.Rendering.Renderer.Calculations;
+using ImageConverter.Rendering.Scene;
 using Ninject;
 
 namespace ImageConverter.Rendering.Renderer
 {
     public abstract  class IRenderer
     {
-        private IObjectParser _objectParser;
-        public IRayIntersactionCalculation RayIntersactionSolver { get; private set; }
-        public ICamera Camera { get; private set; }
-        public ColorIntensativeCalculation ColorIntensativeCalculation { get; private set; }
+        [Inject] private readonly IObjectParser _objectParser;
 
-        protected IRenderer(IObjectParser objectParser, IRayIntersactionCalculation rayIntersactionSolver, ICamera camera, ColorIntensativeCalculation colorIntensativeCalculation)
+        [Inject] protected readonly IRayIntersactionCalculation rayIntersactionSolver;
+
+        [Inject] protected readonly Camera camera;
+
+        [Inject] protected readonly ColorIntensativeCalculation colorIntensativeCalculation;
+
+        [Inject] protected readonly SceneDescription scene;
+
+        protected IRenderer(IObjectParser objectParser, IRayIntersactionCalculation rayIntersactionSolver, Camera camera, ColorIntensativeCalculation colorIntensativeCalculation)
         {
             _objectParser = objectParser;
-            RayIntersactionSolver = rayIntersactionSolver;
-            Camera = camera;
-            ColorIntensativeCalculation = colorIntensativeCalculation;
+            this.rayIntersactionSolver = rayIntersactionSolver;
+            this.camera = camera;
+            this.colorIntensativeCalculation = colorIntensativeCalculation;
         }
 
         public  abstract Image RenderObj(string inputPath);
 
-        public Mesh InitModel(string inputPath)
+        protected Mesh InitModel(string inputPath)
         {
             return  _objectParser.ParseObject(inputPath);
         }
         
-        public List<Vector3> GetScreenPointsForRay(double screenSize, Image goalImage, ICamera camera, Vector3 worldScreenCenter)
-        {
-            List<Vector3> listPointsForRay = new List<Vector3>();
-            
-            int imageHeight = goalImage.Height;
-            int imageWidth = goalImage.Width;
-
-            double pixHeight = screenSize / imageHeight;
-            double pixWidth = screenSize / imageWidth;
-
-            Vector3 plainScreenCenter = new Vector3(screenSize / 2, screenSize / 2, 0);
-            
-
-
-            Vector3 translation = worldScreenCenter;
-            Vector3 scale = new Vector3(1, 1, 1);
-            Vector3 rotation = new Vector3(270, 0, 0);
-
-            var tranformationMatrix = Matrix4x4.GetTransformationMatrix(translation, rotation, scale);
-            
-            double pZ = 0;
-            double pY;
-            double pX;
-
-            List<Vector3> temp = new List<Vector3>();
-
-            for (int i = 0; i < imageHeight; i++)
-            {
-                pY = plainScreenCenter.y - screenSize / 2 + pixHeight * (i + 0.5);
-                for (int j = 0; j < imageWidth; j++)
-                {
-                    pX = plainScreenCenter.x - screenSize / 2 + pixWidth * (j + 0.5);
-                    Vector3 pointCoordinatesInPlainSpace = new Vector3(pX, pY, pZ) - plainScreenCenter;
-                    temp.Add(pointCoordinatesInPlainSpace);
-                    Vector3 pointCoordinatesInWorldSpace = Matrix4x4.TransformToWorldCoordinates(tranformationMatrix, pointCoordinatesInPlainSpace);
-                    listPointsForRay.Add(pointCoordinatesInWorldSpace);
-                }
-            }
-            
-            return listPointsForRay;
-        }
     }
 }

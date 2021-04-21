@@ -2,12 +2,12 @@
 {
     public class GameObject
     {
-        public Transform Transform { get; set; }
-        public Mesh MeshRenderer { get; set; }
+        public Transform transform;
+        public Mesh meshRenderer;
 
         public GameObject(Transform transform)
         {
-            Transform = transform;
+            this.transform = transform;
         }
 
         public GameObject()

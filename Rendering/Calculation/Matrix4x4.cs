@@ -20,7 +20,7 @@ namespace ImageConverter.Rendering.Calculation
      generateTransformation(translation, rotation, scale);
      return m;
   }
-
+  
   public static Vector3 TransformToWorldCoordinates(double[,] matrix, Vector3 point)
   {
     double[,] vector = new double[4, 1];

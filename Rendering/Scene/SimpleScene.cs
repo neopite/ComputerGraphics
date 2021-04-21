@@ -7,7 +7,7 @@
             SceneGameObjects.Add(gameObject);
         }
 
-        public SimpleScene(ICamera mainCamera) : base(mainCamera)
+        public SimpleScene(Camera mainCamera) : base(mainCamera)
         {
         }
     }

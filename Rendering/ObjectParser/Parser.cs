@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using ImageConverter.ImageStructure;
+using ObjLoader.Loader.Data.Elements;
 using ObjLoader.Loader.Loaders;
 
 namespace ImageConverter.Rendering
@@ -36,7 +37,6 @@ namespace ImageConverter.Rendering
                     faces.Add(new Triangle(a,b,c));
                 }
             }
-
             return new Mesh(faces, normals);
         }
     }

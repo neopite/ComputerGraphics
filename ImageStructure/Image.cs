@@ -13,6 +13,13 @@ namespace ImageConverter.ImageStructure
             ImagePalette = new ImagePalette();
         }
 
+        public Image(int width, int height, ImagePalette imagePalette)
+        {
+            Width = width;
+            Height = height;
+            ImagePalette = imagePalette;
+        }
+
         public Image(int width, int height)
         {
             Width = width;

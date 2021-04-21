@@ -5,10 +5,10 @@ namespace ImageConverter.Rendering.Scene
     public abstract class Scene
     {
         public List<GameObject> SceneGameObjects { get; set; } 
-        public ICamera MainCamera { get; set; }
+        public Camera MainCamera { get; set; }
         public abstract void AddGameObject(GameObject gameObject);
 
-        protected Scene(ICamera mainCamera)
+        protected Scene(Camera mainCamera)
         {
             MainCamera = mainCamera;
         }
