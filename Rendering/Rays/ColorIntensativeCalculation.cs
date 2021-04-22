@@ -16,22 +16,31 @@ namespace ImageConverter.Rendering.Rays
             Light = light;
         }
 
-        public Color GetObjectColor(Node node ,IRay ray ,IRayIntersactionCalculation rayIntersactionSolver)
+        public Color GetObjectColor(Node node, IRay ray, IRayIntersactionCalculation rayIntersactionSolver)
         {
+            TriagleIntersectionModel minDistance = new TriagleIntersectionModel(Double.MaxValue);
             for (int triangle = 0; triangle < node.triangles.Count; triangle++)
             {
-                TriagleIntersectionModel intersection = rayIntersactionSolver.RayIntersectsTriangle(ray, node.triangles[triangle]);
-                if (intersection != null)
+                TriagleIntersectionModel intersection =
+                    rayIntersactionSolver.RayIntersectsTriangle(ray, node.triangles[triangle]);
+                if (intersection != null && minDistance.Distance > intersection.Distance)
                 {
-                    double intensative =
-                        FindColorIntensativeForTrinagle(intersection.Triangle);
-                    return Color.Red * intensative;
+                    minDistance = intersection;
                 }
             }
-            return Color.Black;
-        }
 
-        private double FindColorIntensativeForTrinagle(Triangle triangle)
+            if (minDistance.Triangle == null)
+            {
+                return Color.Black;
+            }
+            else{
+            double intensative =
+                FindColorIntensativeForTrinagle(minDistance.Triangle);
+            return  Color.Red * intensative;
+        }
+    }
+
+    private double FindColorIntensativeForTrinagle(Triangle triangle)
         {
             Vector3 triangleCenterPoint = GetSurfaceCenter(triangle);
             Vector3 lightDirection = Light.Origin - triangleCenterPoint;
@@ -46,7 +55,7 @@ namespace ImageConverter.Rendering.Rays
                 (lightSourceDirectionLength * lightSourceDirectionLength + triangleNormalLength * triangleNormalLength -
                  c.Length * c.Length) / (2 * lightSourceDirectionLength * triangleNormalLength);
             
-            var globalLight = 0.05;
+            var globalLight = 0.1;
             return Math.Max(globalLight, Math.Abs(cos));
         }
 

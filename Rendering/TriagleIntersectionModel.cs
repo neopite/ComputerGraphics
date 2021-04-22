@@ -12,5 +12,10 @@
             IntersactionPoint = intersactionPoint;
             Distance = distance;
         }
+
+        public TriagleIntersectionModel(double distance)
+        {
+            Distance = distance;
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace ImageConverter.Rendering.Lights
         [Inject]
         public ILight()
         {
-            Origin = new Vector3(0, 5, 0);
+            Origin = new Vector3(0, 1, 0);
         }
     }
 }
