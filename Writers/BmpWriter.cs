@@ -17,7 +17,6 @@ namespace ImageConverter.Writers
         public BmpWriter()
         {
         }
-
         public override void WriteImage(Image image)
         {
             BinaryWriter writer = new BinaryWriter(new FileStream(OutputPath + ".bmp", FileMode.Create));
