@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using ImageConverter.ImageStructure;
 using ImageConverter.Writers.FormatData;
-using ImageFormatConverter;
 using Ninject;
 
 namespace ImageConverter.Writers
